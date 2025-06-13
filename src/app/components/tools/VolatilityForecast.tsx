@@ -33,6 +33,23 @@ ChartJS.register(
   Legend
 );
 
+// Additional registration to ensure components are available
+if (typeof window !== 'undefined') {
+  try {
+    ChartJS.register(
+      CategoryScale,
+      LinearScale,
+      PointElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend
+    );
+  } catch (error) {
+    console.error('Chart.js registration error:', error);
+  }
+}
+
 interface VolatilityForecastProps {
   className?: string;
   ticker?: string;
@@ -86,6 +103,12 @@ export default function VolatilityForecast({
   const [customTicker, setCustomTicker] = useState('');
   const [isCustomTicker, setIsCustomTicker] = useState(false);
   const [showTickerInput, setShowTickerInput] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  // Ensure this is client-side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Fetch data using the proper volatility service
   const fetchData = async (ticker: string) => {
@@ -398,6 +421,24 @@ export default function VolatilityForecast({
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             Volatility Forecast Chart
           </h3>
+          
+          {/* Debug Info */}
+          <div className="mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded text-sm">
+            <p><strong>Debug Info:</strong></p>
+            <p>Client Side: {isClient.toString()}</p>
+            <p>Loading: {loading.toString()}</p>
+            <p>Error: {error || 'None'}</p>
+            <p>Analysis Results: {analysisResults ? 'Available' : 'None'}</p>
+            <p>Chart Data: {chartData ? 'Available' : 'None'}</p>
+            {analysisResults && (
+              <>
+                <p>Data Length: {analysisResults.labels.length} points</p>
+                <p>Sample Labels: {analysisResults.labels.slice(0, 3).join(', ')}</p>
+                <p>Sample Historical: {analysisResults.historicalData.slice(-3).join(', ')}</p>
+              </>
+            )}
+          </div>
+          
           {loading && (
             <div className="h-[400px] flex items-center justify-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -411,10 +452,25 @@ export default function VolatilityForecast({
               </div>
             </div>
           )}
-          {!loading && !error && analysisResults && chartData && (
+          {!loading && !error && analysisResults && chartData && isClient && (
             <>
               <div className="h-[400px] mb-4">
-                <Line data={chartData} options={chartOptions} />
+                {(() => {
+                  try {
+                    return <Line data={chartData} options={chartOptions} />;
+                  } catch (chartError) {
+                    console.error('Chart rendering error:', chartError);
+                    return (
+                      <div className="h-full flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded">
+                        <div className="text-center">
+                          <p className="text-red-600 dark:text-red-400 mb-2">Chart rendering failed</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Check browser console for details</p>
+                          <p className="text-xs text-gray-500 mt-2">Error: {String(chartError)}</p>
+                        </div>
+                      </div>
+                    );
+                  }
+                })()}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -435,6 +491,14 @@ export default function VolatilityForecast({
                 </div>
               </div>
             </>
+          )}
+          {!loading && !error && analysisResults && !isClient && (
+            <div className="h-[400px] flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-gray-600 dark:text-gray-400">Loading chart...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500">Initializing client-side rendering</p>
+              </div>
+            </div>
           )}
           {!loading && !error && !analysisResults && (
             <div className="h-[400px] flex items-center justify-center">
