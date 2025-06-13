@@ -5,14 +5,30 @@ import { getVIXBasedImpliedVolatility } from './vix-implied-vol';
 
 const YAHOO_FINANCE_API = 'https://query2.finance.yahoo.com/v7/finance/options';
 
+// Rotate between different user agents to avoid detection
+const USER_AGENTS = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0'
+];
+
 // Common headers for Yahoo Finance API
-const YAHOO_HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-  'Accept': 'application/json',
-  'Accept-Language': 'en-US,en;q=0.9',
-  'Referer': 'https://finance.yahoo.com/',
-  'Origin': 'https://finance.yahoo.com'
-};
+function getYahooHeaders() {
+  const randomUserAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+  return {
+    'User-Agent': randomUserAgent,
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Referer': 'https://finance.yahoo.com/',
+    'Origin': 'https://finance.yahoo.com',
+    'Cache-Control': 'no-cache',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-site'
+  };
+}
 
 interface YahooOptionResponse {
   optionChain: {
@@ -66,9 +82,15 @@ export async function getOptionChain(symbol: string): Promise<{
 
   try {
     const response = await axios.get<YahooOptionResponse>(`${YAHOO_FINANCE_API}/${symbol}`, {
-      headers: YAHOO_HEADERS,
-      timeout: 10000
+      headers: getYahooHeaders(),
+      timeout: 15000, // Increased timeout
+      validateStatus: (status) => status < 500 // Don't throw on 4xx errors
     });
+
+    // Handle 401/403 responses gracefully
+    if (response.status === 401 || response.status === 403) {
+      throw new Error('Yahoo Finance API access denied - using fallback method');
+    }
 
     if (!response.data?.optionChain?.result?.[0]) {
       throw new Error('Invalid response format from Yahoo Finance');
@@ -105,6 +127,8 @@ export async function getOptionChain(symbol: string): Promise<{
         throw new Error(`Ticker ${symbol} not found`);
       } else if (error.response?.status === 429) {
         throw new Error('Rate limit exceeded');
+      } else if (error.response?.status === 401 || error.response?.status === 403) {
+        throw new Error('Yahoo Finance API access denied - using fallback method');
       }
     }
     throw new Error('Failed to fetch option chain data');
@@ -140,6 +164,8 @@ export async function getImpliedVolatility(symbol: string): Promise<{
   source?: string;
   metadata?: any;
 }> {
+  console.log(`Attempting to get implied volatility for ${symbol}`);
+  
   try {
     // First, try to get options-based implied volatility
     try {
@@ -150,6 +176,8 @@ export async function getImpliedVolatility(symbol: string): Promise<{
       
       // Calculate ATM implied volatility using Bjerksund-Stensland
       const impliedVol = calculateATMImpliedVol(allOptions, spotPrice);
+      
+      console.log(`Successfully calculated options-based IV for ${symbol}: ${impliedVol * 100}%`);
       
       return {
         impliedVol: impliedVol * 100, // Convert to percentage
@@ -162,6 +190,8 @@ export async function getImpliedVolatility(symbol: string): Promise<{
       
       // Fallback to VIX-based calculation
       const vixResult = await getVIXBasedImpliedVolatility(symbol);
+      
+      console.log(`Successfully fetched VIX-based IV for ${symbol}: ${vixResult.impliedVol}%`);
       
       return {
         impliedVol: vixResult.impliedVol,

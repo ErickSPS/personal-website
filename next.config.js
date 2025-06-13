@@ -9,6 +9,9 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['axios']
   },
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY || '',
+  },
   async headers() {
     return [
       {
