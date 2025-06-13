@@ -44,7 +44,17 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
   try {
     // Use our API route instead of direct Yahoo Finance call
     const response = await axios.get(`/api/volatility/forecast?ticker=${ticker}`);
-    return response.data;
+    
+    // Transform the API response to match the expected interface
+    const apiData = response.data;
+    
+    return {
+      dates: apiData.labels || [],
+      historical: apiData.historicalData || [],
+      ewma_fast: apiData.forecastData || [],
+      ensemble: apiData.ensembleForecastData || [],
+      implied_vol: apiData.impliedVol || []
+    };
   } catch (error) {
     console.error('Error fetching volatility data:', error);
     throw new Error('Failed to fetch volatility data');

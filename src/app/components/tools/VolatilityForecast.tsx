@@ -59,6 +59,7 @@ interface MarketEvent {
 interface VolatilityData {
   historicalData: number[];
   forecastData: (number | null)[];
+  ensembleForecastData?: (number | null)[];
   labels: string[];
   historicalVol: number;
 }
@@ -143,18 +144,24 @@ export default function VolatilityForecast({
     setError(null);
     
     try {
+      console.log(`Fetching data for ${tickerInput}...`);
       const volResponse = await fetchVolatilityData(tickerInput);
+      console.log('Raw API response:', volResponse);
+      
       const result = processVolatilityData(volResponse);
+      console.log('Processed data:', result);
       
       // Create properly formatted volatility metrics
       const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
         rolling30d: result.historicalData[i] || 0,
         ewmaFast: result.forecastData[i] || 0,
         ensemble: result.ensembleForecastData[i] || 0,
-        impliedVol: volResponse.implied_vol[i] || 0,
+        impliedVol: (volResponse.implied_vol && volResponse.implied_vol[i]) || 0,
         timestamp: date
       }));
 
+      console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
+      
       setVolData(metrics);
       setAnalysisResults({
         historicalData: result.historicalData,
@@ -164,7 +171,7 @@ export default function VolatilityForecast({
       });
       setLoading(false);
     } catch (err) {
-      console.error('Error:', err);
+      console.error('Error in handleAnalyze:', err);
       setError(err instanceof Error ? err.message : 'Failed to analyze volatility');
       setAnalysisResults(null);
       setLoading(false);
@@ -190,6 +197,14 @@ export default function VolatilityForecast({
         backgroundColor: 'transparent',
         borderWidth: 2,
         borderDash: [5, 5],
+      },
+      {
+        label: 'Ensemble Forecast',
+        data: analysisResults.ensembleForecastData || [],
+        borderColor: isDarkMode ? '#A78BFA' : '#8B5CF6',
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        borderDash: [10, 5],
       },
     ],
   } : null;
@@ -252,18 +267,26 @@ export default function VolatilityForecast({
   // Fetch data using the proper volatility service
   const fetchData = async (ticker: string) => {
     setLoading(true);
+    setError(null);
+    
     try {
+      console.log(`Fetching data for ${ticker}...`);
       const volResponse = await fetchVolatilityData(ticker);
+      console.log('Raw API response:', volResponse);
+      
       const result = processVolatilityData(volResponse);
+      console.log('Processed data:', result);
       
       // Create properly formatted volatility metrics
       const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
         rolling30d: result.historicalData[i] || 0,
         ewmaFast: result.forecastData[i] || 0,
         ensemble: result.ensembleForecastData[i] || 0,
-        impliedVol: volResponse.implied_vol[i] || 0,
+        impliedVol: (volResponse.implied_vol && volResponse.implied_vol[i]) || 0,
         timestamp: date
       }));
+
+      console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
 
       setVolData(metrics);
       setAnalysisResults({
@@ -275,6 +298,8 @@ export default function VolatilityForecast({
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setError(error instanceof Error ? error.message : 'Failed to fetch volatility data');
+      setAnalysisResults(null);
       setLoading(false);
     }
   };
