@@ -1,0 +1,61 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage
+.coverage
+__tests__
+*.test.ts
+*.test.tsx
+jest.config.js
+jest.setup.js
+
+# Python files (not needed for Next.js deployment)
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.pytest_cache
+htmlcov
+.venv
+venv/
+.env
+volatility/
+api/
+tests/
+requirements.txt
+setup.py
+pyproject.toml
+volatility_forecast.egg-info/
+
+# Development
+.DS_Store
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+Thumbs.db 

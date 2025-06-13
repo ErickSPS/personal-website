@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-text dark:bg-background-dark dark:text-text-dark;
+    @apply transition-colors duration-200;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-primary dark:text-primary-light font-bold tracking-tight;
+  }
+  
+  p {
+    @apply text-text dark:text-text-dark leading-relaxed;
+  }
+  
+  a {
+    @apply text-secondary hover:text-secondary-dark dark:text-secondary-light dark:hover:text-secondary transition-colors;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+
+  .card {
+    @apply bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm rounded-xl border border-border dark:border-border-dark p-6;
+  }
+
+  .card-hover {
+    @apply hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary-light/5 transition-all hover:scale-[1.02];
+  }
+
+  .button {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background shadow-sm hover:shadow-md;
+  }
+
+  .button-primary {
+    @apply bg-gradient-to-r from-primary to-primary-light text-white hover:from-primary-light hover:to-primary-dark hover:shadow-lg hover:shadow-primary/25 dark:hover:shadow-primary-light/25 transform hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .button-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-light dark:bg-secondary-dark dark:hover:bg-secondary hover:shadow-lg hover:shadow-secondary/25 dark:hover:shadow-secondary-light/25 transform hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .button-accent {
+    @apply bg-accent text-accent-foreground hover:bg-accent-light dark:bg-accent-dark dark:hover:bg-accent hover:shadow-lg hover:shadow-accent/25 dark:hover:shadow-accent-light/25 transform hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .button-outline {
+    @apply border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-white dark:border-primary-light dark:text-primary-light dark:hover:bg-primary-light dark:hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/20 dark:hover:shadow-primary-light/20 transform hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm;
+  }
+
+  /* Enhanced button styles for hero section */
+  .hero-button-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-8 py-4 text-base font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background;
+    @apply bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-lg shadow-blue-600/30;
+    @apply hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 hover:shadow-xl hover:shadow-blue-600/40 hover:-translate-y-1;
+    @apply dark:from-blue-500 dark:via-blue-600 dark:to-blue-700 dark:shadow-blue-500/30 dark:hover:from-blue-600 dark:hover:via-blue-700 dark:hover:to-blue-800 dark:hover:shadow-blue-500/40;
+    @apply active:translate-y-0 active:shadow-lg;
+    @apply before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-white/20 before:to-transparent before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100;
+    @apply relative overflow-hidden;
+  }
+
+  .hero-button-outline {
+    @apply inline-flex items-center justify-center rounded-xl px-8 py-4 text-base font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background;
+    @apply border-2 border-gray-300 bg-white/80 text-gray-700 shadow-lg shadow-gray-200/50 backdrop-blur-sm;
+    @apply hover:border-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:shadow-xl hover:shadow-blue-200/50 hover:-translate-y-1;
+    @apply dark:border-gray-600 dark:bg-gray-800/80 dark:text-gray-200 dark:shadow-gray-800/50;
+    @apply dark:hover:border-blue-400 dark:hover:bg-blue-950/50 dark:hover:text-blue-300 dark:hover:shadow-blue-900/50;
+    @apply active:translate-y-0 active:shadow-lg;
+    @apply before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-blue-600/10 before:to-transparent before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100;
+    @apply relative overflow-hidden;
+  }
+
+  .input {
+    @apply flex h-10 w-full rounded-md border border-border dark:border-border-dark bg-background dark:bg-background-dark px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-text-muted dark:placeholder:text-text-dark-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:focus-visible:ring-primary-light focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors;
+  }
+
+  .badge-primary {
+    @apply bg-primary-light/10 text-primary dark:bg-primary-light/20 dark:text-primary-light;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary-light/10 text-secondary dark:bg-secondary-light/20 dark:text-secondary-light;
+  }
+
+  .badge-accent {
+    @apply bg-accent-light/10 text-accent-dark dark:bg-accent-light/20 dark:text-accent;
+  }
+
+  /* Additional button enhancements */
+  .hero-button-primary:hover {
+    animation: pulse-glow 2s infinite;
+  }
+
+  .hero-button-outline:hover {
+    animation: border-glow 2s infinite;
+  }
+
+  /* Smooth focus states for accessibility */
+  .hero-button-primary:focus-visible,
+  .hero-button-outline:focus-visible {
+    @apply ring-4 ring-blue-500/50 ring-offset-4;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 640px) {
+    .hero-button-primary,
+    .hero-button-outline {
+      @apply px-6 py-3 text-sm;
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 20px 40px -5px rgba(59, 130, 246, 0.6), 0 0 0 1px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@keyframes border-glow {
+  0%, 100% {
+    box-shadow: 0 10px 25px -5px rgba(156, 163, 175, 0.3), inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 20px 40px -5px rgba(59, 130, 246, 0.4), inset 0 0 0 1px rgba(59, 130, 246, 0.3);
+  }
+} 
