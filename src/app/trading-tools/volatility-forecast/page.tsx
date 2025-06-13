@@ -173,6 +173,13 @@ export default function VolatilityForecastPage() {
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Volatility Forecast Charts */}
+          <div className="lg:col-span-2">
+            <VolatilityForecast
+              ticker={selectedTicker}
+            />
+          </div>
+
           {/* Volatility Thermometer */}
           <div className="lg:col-span-2">
             <VolatilityThermometer ticker={selectedTicker} />

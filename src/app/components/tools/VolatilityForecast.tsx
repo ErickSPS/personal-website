@@ -87,50 +87,55 @@ export default function VolatilityForecast({
   const [isCustomTicker, setIsCustomTicker] = useState(false);
   const [showTickerInput, setShowTickerInput] = useState(false);
 
-  useEffect(() => {
-    // In a real implementation, this would fetch data from your API
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Mock data for demonstration
-        const mockVolData: VolatilityMetrics[] = Array.from({ length: 30 }, (_, i) => ({
-          rolling30d: 20 + Math.random() * 5,
-          ewmaFast: 18 + Math.random() * 4,
-          ensemble: 19 + Math.random() * 3,
-          impliedVol: 22 + Math.random() * 4,
-          timestamp: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString(),
-        }));
+  // Fetch data using the proper volatility service
+  const fetchData = async (ticker: string) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      console.log(`Fetching data for ${ticker}...`);
+      const volResponse = await fetchVolatilityData(ticker);
+      console.log('Raw API response:', volResponse);
+      
+      const result = processVolatilityData(volResponse);
+      console.log('Processed data:', result);
+      
+             // Create properly formatted volatility metrics
+      const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
+        rolling30d: result.historicalData[i] || 0,
+        ewmaFast: result.forecastData[i] || 0,
+        ensemble: result.ensembleForecastData?.[i] || 0,
+        impliedVol: result.modelPredictions?.implied || 0,
+        timestamp: date
+      }));
 
-        const mockEvents: MarketEvent[] = [
-          {
-            type: 'earnings',
-            date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-            title: 'Reporte de Ganancias Q1',
-            description: 'Reporte trimestral de ganancias',
-            expectedVolImpact: 5,
-            historicalAvgMove: 3.5,
-          },
-          {
-            type: 'fomc',
-            date: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000),
-            title: 'Reunión FOMC',
-            description: 'Decisión de tasas de interés',
-            expectedVolImpact: 8,
-            historicalAvgMove: 4.2,
-          },
-        ];
+      console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
 
-        setVolData(mockVolData);
-        setEvents(mockEvents);
-        setSpotPrice(400); // Mock spot price
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching volatility data:', error);
-        setLoading(false);
+      setVolData(metrics);
+      setAnalysisResults({
+        historicalData: result.historicalData,
+        forecastData: result.forecastData,
+        ensembleForecastData: result.ensembleForecastData,
+        labels: result.labels,
+        historicalVol: result.historicalVol || 0
+      });
+      
+      // Also set implied vol from the result
+      if (result.modelPredictions?.implied) {
+        setSpotPrice(result.modelPredictions.implied); // Using implied vol as proxy for recent data
       }
-    };
-
-    fetchData();
+      
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError(error instanceof Error ? error.message : 'Failed to fetch volatility data');
+      setAnalysisResults(null);
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchData(ticker);
   }, [ticker]);
 
   const handleAnalyze = async (e: React.FormEvent) => {
@@ -261,46 +266,6 @@ export default function VolatilityForecast({
       setShowTickerInput(false);
       // Trigger data fetch for custom ticker
       fetchData(customTicker.toUpperCase());
-    }
-  };
-
-  // Fetch data using the proper volatility service
-  const fetchData = async (ticker: string) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      console.log(`Fetching data for ${ticker}...`);
-      const volResponse = await fetchVolatilityData(ticker);
-      console.log('Raw API response:', volResponse);
-      
-      const result = processVolatilityData(volResponse);
-      console.log('Processed data:', result);
-      
-      // Create properly formatted volatility metrics
-      const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
-        rolling30d: result.historicalData[i] || 0,
-        ewmaFast: result.forecastData[i] || 0,
-        ensemble: result.ensembleForecastData[i] || 0,
-        impliedVol: (volResponse.implied_vol && volResponse.implied_vol[i]) || 0,
-        timestamp: date
-      }));
-
-      console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
-
-      setVolData(metrics);
-      setAnalysisResults({
-        historicalData: result.historicalData,
-        forecastData: result.forecastData,
-        labels: result.labels,
-        historicalVol: result.historicalVol || 0
-      });
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setError(error instanceof Error ? error.message : 'Failed to fetch volatility data');
-      setAnalysisResults(null);
-      setLoading(false);
     }
   };
 
@@ -509,7 +474,7 @@ export default function VolatilityForecast({
           </div>
         )}
 
-        {analysisResults && (
+        {(analysisResults || chartData) && (
           <div>
             <div className="mb-6 h-[400px]">
               <Line data={chartData!} options={chartOptions} />
@@ -521,7 +486,7 @@ export default function VolatilityForecast({
                   Historical Volatility
                 </h3>
                 <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  {analysisResults.historicalVol.toFixed(2)}%
+                  {analysisResults?.historicalVol?.toFixed(2) || '0.00'}%
                 </p>
               </div>
               <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -529,7 +494,7 @@ export default function VolatilityForecast({
                   Forecast Volatility
                 </h3>
                 <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
-                  {(analysisResults.forecastData[analysisResults.forecastData.length - 1] || 0).toFixed(2)}%
+                  {(analysisResults?.forecastData?.[analysisResults.forecastData.length - 1] || 0).toFixed(2)}%
                 </p>
               </div>
             </div>
