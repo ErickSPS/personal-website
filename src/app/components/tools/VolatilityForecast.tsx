@@ -82,7 +82,7 @@ export default function VolatilityForecast({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysisResults, setAnalysisResults] = useState<VolatilityData | null>(null);
-  const [selectedTicker, setSelectedTicker] = useState('SPY');
+  const [selectedTicker, setSelectedTicker] = useState(ticker);
   const [customTicker, setCustomTicker] = useState('');
   const [isCustomTicker, setIsCustomTicker] = useState(false);
   const [showTickerInput, setShowTickerInput] = useState(false);
@@ -269,10 +269,11 @@ export default function VolatilityForecast({
     }
   };
 
-  // Add this to your useEffect
+  // Auto-fetch data when ticker prop changes
   useEffect(() => {
-    fetchData(selectedTicker);
-  }, [selectedTicker]);
+    setSelectedTicker(ticker);
+    fetchData(ticker);
+  }, [ticker]);
 
   if (loading) {
     return (
@@ -392,6 +393,59 @@ export default function VolatilityForecast({
           </div>
         )}
 
+        {/* Volatility Chart */}
+        <div className="mb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            Volatility Forecast Chart
+          </h3>
+          {loading && (
+            <div className="h-[400px] flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          )}
+          {!loading && error && (
+            <div className="h-[400px] flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-red-600 dark:text-red-400 mb-2">Failed to load chart data</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{error}</p>
+              </div>
+            </div>
+          )}
+          {!loading && !error && analysisResults && chartData && (
+            <>
+              <div className="h-[400px] mb-4">
+                <Line data={chartData} options={chartOptions} />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    Historical Volatility
+                  </h4>
+                  <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                    {analysisResults.historicalVol?.toFixed(2) || '0.00'}%
+                  </p>
+                </div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    Forecast Volatility
+                  </h4>
+                  <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+                    {(analysisResults.forecastData?.[analysisResults.forecastData.length - 1] || 0).toFixed(2)}%
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+          {!loading && !error && !analysisResults && (
+            <div className="h-[400px] flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-gray-600 dark:text-gray-400">No data available</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500">Try refreshing the page</p>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="grid grid-cols-1 gap-6">
           <VolatilityThermometer
             data={volData}
@@ -477,6 +531,7 @@ export default function VolatilityForecast({
         {(analysisResults || chartData) && (
           <div>
             <div className="mb-6 h-[400px]">
+
               <Line data={chartData!} options={chartOptions} />
             </div>
 
