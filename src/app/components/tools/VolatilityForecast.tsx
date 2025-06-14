@@ -127,6 +127,13 @@ export default function VolatilityForecast({
       }));
 
       console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
+      console.log('Setting analysis results with:', {
+        historicalData: result.historicalData.length,
+        forecastData: result.forecastData.length,
+        ensembleForecastData: result.ensembleForecastData?.length,
+        labels: result.labels.length,
+        historicalVol: result.historicalVol
+      });
 
       setVolData(metrics);
       setAnalysisResults({
@@ -142,6 +149,7 @@ export default function VolatilityForecast({
         setSpotPrice(result.modelPredictions.implied); // Using implied vol as proxy for recent data
       }
       
+      console.log('Data fetch completed successfully');
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -355,11 +363,25 @@ export default function VolatilityForecast({
             <p>Error: {error || 'None'}</p>
             <p>Analysis Results: {analysisResults ? 'Available' : 'None'}</p>
             <p>Chart Data: {chartData ? 'Available' : 'None'}</p>
+            <p>Selected Ticker: {selectedTicker}</p>
+            <p>Vol Data Length: {volData.length}</p>
             {analysisResults && (
               <>
                 <p>Data Length: {analysisResults.labels.length} points</p>
                 <p>Sample Labels: {analysisResults.labels.slice(0, 3).join(', ')}</p>
                 <p>Sample Historical: {analysisResults.historicalData.slice(-3).join(', ')}</p>
+                <p>Sample Forecast: {analysisResults.forecastData.slice(-3).join(', ')}</p>
+                <p>Historical Vol: {analysisResults.historicalVol}</p>
+              </>
+            )}
+            {chartData && (
+              <>
+                <p>Chart Labels: {chartData.labels.length}</p>
+                <p>Historical Dataset Length: {chartData.datasets[0].data.length}</p>
+                <p>Forecast Dataset Length: {chartData.datasets[1].data.length}</p>
+                <p>Ensemble Dataset Length: {chartData.datasets[2].data.length}</p>
+                <p>Sample Chart Historical: {chartData.datasets[0].data.slice(-3).join(', ')}</p>
+                <p>Sample Chart Forecast: {chartData.datasets[1].data.slice(-3).join(', ')}</p>
               </>
             )}
           </div>

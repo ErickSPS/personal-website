@@ -48,12 +48,15 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
     // Transform the API response to match the expected interface
     const apiData = response.data;
     
+    // API returns: {labels, historicalData, forecastData, ensembleForecastData, impliedVol}
+    // Service expects: {dates, historical, ewma_fast, ensemble, implied_vol}
+    
     return {
       dates: apiData.labels || [],
       historical: apiData.historicalData || [],
       ewma_fast: apiData.forecastData || [],
       ensemble: apiData.ensembleForecastData || [],
-      implied_vol: apiData.impliedVol || []
+      implied_vol: Array.isArray(apiData.impliedVol) ? apiData.impliedVol : []
     };
   } catch (error) {
     console.error('Error fetching volatility data:', error);
