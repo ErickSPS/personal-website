@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import ClientLayout from '../../../components/ClientLayout';
-import VolatilityForecast from '../../components/tools/VolatilityForecast';
 import VolatilityThermometer from '../../components/tools/VolatilityThermometer';
 import PositionSizer from '../../components/tools/PositionSizer';
 import EventsCalendar from '../../components/tools/EventsCalendar';
@@ -173,14 +172,7 @@ export default function VolatilityForecastPage() {
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Volatility Forecast Charts */}
-          <div className="lg:col-span-2">
-            <VolatilityForecast
-              ticker={selectedTicker}
-            />
-          </div>
-
-          {/* Volatility Thermometer */}
+          {/* Volatility Analysis Dashboard - Consolidated Chart */}
           <div className="lg:col-span-2">
             <VolatilityThermometer ticker={selectedTicker} />
           </div>
