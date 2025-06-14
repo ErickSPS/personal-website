@@ -105,7 +105,7 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
       });
     }
     
-    console.log(`[VolatilityService] API Response status: ${response.status}`);
+        console.log(`[VolatilityService] API Response status: ${response.status}`);
     console.log(`[VolatilityService] API Response data keys:`, Object.keys(response.data));
     
     // Transform the API response to match the expected interface
@@ -121,18 +121,29 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
       ensemble: apiData.ensembleForecastData || [],
       implied_vol: Array.isArray(apiData.impliedVol) ? apiData.impliedVol : []
     };
-    
+
+    // Validate that we received useful data (even if it's fallback data)
+    const hasValidData = transformedData.dates.length > 0 && 
+                        transformedData.historical.length > 0 && 
+                        transformedData.ewma_fast.length > 0 &&
+                        transformedData.ensemble.length > 0;
+
     console.log(`[VolatilityService] Transformed data:`, {
       datesLength: transformedData.dates.length,
       historicalLength: transformedData.historical.length,
       ewmaLength: transformedData.ewma_fast.length,
       ensembleLength: transformedData.ensemble.length,
       impliedVolLength: transformedData.implied_vol.length,
+      hasValidData,
       sampleDates: transformedData.dates.slice(0, 3),
       sampleHistorical: transformedData.historical.slice(-3)
     });
     
-    return transformedData;
+    if (hasValidData) {
+      return transformedData;
+    } else {
+      throw new Error('No valid data received from API');
+    }
   } catch (error) {
     console.error('[VolatilityService] Error fetching volatility data:', error);
     
