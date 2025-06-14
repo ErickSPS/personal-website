@@ -353,4 +353,13 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
+}
+
+// Simple health check - remove this after debugging
+export async function OPTIONS() {
+  return NextResponse.json({ 
+    status: 'OK', 
+    message: 'Forecast API route is accessible',
+    timestamp: new Date().toISOString()
+  });
 } 
