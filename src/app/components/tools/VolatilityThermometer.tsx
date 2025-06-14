@@ -122,33 +122,43 @@ export default function VolatilityThermometer({
         
         // Transform the data into the expected format and filter out invalid entries
         // Get the latest implied volatility value (the last non-null value)
-        const latestImpliedVol = data.impliedVol || 20; // fallback value
+        const latestImpliedVol = Array.isArray(data.impliedVol) 
+          ? (data.impliedVol.filter((iv: number | null) => iv !== null && iv !== undefined).pop() || 20)
+          : 20; // fallback value
         
         const metrics = processedData.labels.map((date: string, i: number) => ({
           timestamp: date,
-          rolling30d: processedData.historicalData[i] || null,
-          ewmaFast: processedData.forecastData[i] || null,
-          ensemble: processedData.ensembleForecastData?.[i] || null,
+          rolling30d: processedData.historicalData[i] ?? null,
+          ewmaFast: processedData.forecastData[i] ?? null,
+          ensemble: processedData.ensembleForecastData?.[i] ?? null,
           // Only assign implied vol to the last data point where we have it
           impliedVol: i === processedData.labels.length - 1 ? latestImpliedVol : null
-        })).filter((metric: VolatilityMetrics) => 
-          metric.timestamp && 
-          (metric.rolling30d !== null || 
-           metric.ewmaFast !== null || 
-           metric.ensemble !== null || 
-           metric.impliedVol !== null)
+        }));
+        
+        // Don't filter out data points - let Chart.js handle null values with spanGaps
+        // Filter only for completely invalid entries
+        const validMetrics = metrics.filter((metric: VolatilityMetrics) => 
+          metric.timestamp && metric.timestamp.length > 0
         );
         
         // Sort by date
-        metrics.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+        validMetrics.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         
         console.log('[VolatilityThermometer] Processed data:', {
-          metricsLength: metrics.length,
-          firstMetric: metrics[0],
-          lastMetric: metrics[metrics.length - 1]
+          totalMetrics: metrics.length,
+          validMetrics: validMetrics.length,
+          firstMetric: validMetrics[0],
+          lastMetric: validMetrics[validMetrics.length - 1],
+          sampleData: validMetrics.slice(-5).map(m => ({
+            timestamp: m.timestamp,
+            historical: m.rolling30d,
+            forecast: m.ewmaFast,
+            ensemble: m.ensemble,
+            implied: m.impliedVol
+          }))
         });
         
-        setVolData(metrics);
+        setVolData(validMetrics);
       } catch (error) {
         console.error('[VolatilityThermometer] Error fetching volatility data:', error);
         setError(error instanceof Error ? error.message : 'Failed to fetch data');
