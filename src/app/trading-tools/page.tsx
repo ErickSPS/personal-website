@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ChartBarIcon } from '@heroicons/react/24/outline';
-import Header from '@/components/Header';
+import Header from '../../components/Header';
 
 export default function TradingTools() {
   return (

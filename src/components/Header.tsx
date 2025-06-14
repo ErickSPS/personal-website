@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useTheme } from '@/components/providers/ThemeProvider';
+import { useTheme } from './providers/ThemeProvider';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 export default function Header() {
