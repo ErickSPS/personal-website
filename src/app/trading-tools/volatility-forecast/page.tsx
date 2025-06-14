@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import ClientLayout from '@/components/ClientLayout';
-import VolatilityForecast from '@/app/components/tools/VolatilityForecast';
-import VolatilityThermometer from '@/app/components/tools/VolatilityThermometer';
-import PositionSizer from '@/app/components/tools/PositionSizer';
-import EventsCalendar from '@/app/components/tools/EventsCalendar';
-import StrategySuggestions from '@/app/components/tools/StrategySuggestions';
-import { DataDisclaimer } from '@/app/components/tools/DataDisclaimer';
+import VolatilityForecast from '../../components/tools/VolatilityForecast';
+import VolatilityThermometer from '../../components/tools/VolatilityThermometer';
+import PositionSizer from '../../components/tools/PositionSizer';
+import EventsCalendar from '../../components/tools/EventsCalendar';
+import StrategySuggestions from '../../components/tools/StrategySuggestions';
+import { DataDisclaimer } from '../../components/tools/DataDisclaimer';
 import { fetchVolatilityData, processVolatilityData, fetchMarketEvents } from './volatility.service';
 
 

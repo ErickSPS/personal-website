@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DocumentChartBarIcon, BuildingLibraryIcon, ChartBarIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { EventsCalendarProps, MarketEvent, MarketEventType } from '@/types/market-events';
-import { fetchMarketEvents } from '@/app/trading-tools/volatility-forecast/volatility.service';
+import { fetchMarketEvents } from '../../trading-tools/volatility-forecast/volatility.service';
 
 const getEventIcon = (type: MarketEventType) => {
   switch (type) {
