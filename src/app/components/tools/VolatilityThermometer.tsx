@@ -99,26 +99,23 @@ export default function VolatilityThermometer({
         }
         
         const data = await response.json();
-        console.log('[VolatilityThermometer] API response:', {
-          hasData: !!data,
-          labelsLength: data.labels?.length,
-          historicalLength: data.historicalData?.length,
-          forecastLength: data.forecastData?.length,
-          ensembleLength: data.ensembleForecastData?.length,
-          impliedVol: data.impliedVol
+        console.log(`[VolatilityThermometer] API Response:`, data);
+        console.log(`[VolatilityThermometer] API Response data keys:`, Object.keys(data));
+        console.log(`[VolatilityThermometer] API Response sample:`, {
+          labels: data.labels?.slice(0, 3),
+          historicalData: data.historicalData?.slice(0, 3),
+          forecastData: data.forecastData?.slice(0, 3),
+          ensembleForecastData: data.ensembleForecastData?.slice(0, 3),
+          impliedVol: data.impliedVol?.slice(0, 3)
         });
         
         if (!data.labels || !data.historicalData) {
           throw new Error('Invalid data format received from API');
         }
         
-        const processedData = processVolatilityData({
-          dates: data.labels,
-          historical: data.historicalData,
-          ewma_fast: data.forecastData,
-          ensemble: data.ensembleForecastData,
-          implied_vol: data.impliedVol
-        });
+        // Since the API already returns the correct format, we don't need to use processVolatilityData
+        // Instead, we'll directly use the API response data
+        console.log(`[VolatilityThermometer] Using API data directly`);
         
         // Transform the data into the expected format and filter out invalid entries
         // Get the latest implied volatility value (the last non-null value)
@@ -126,13 +123,13 @@ export default function VolatilityThermometer({
           ? (data.impliedVol.filter((iv: number | null) => iv !== null && iv !== undefined).pop() || 20)
           : 20; // fallback value
         
-        const metrics = processedData.labels.map((date: string, i: number) => ({
+        const metrics = data.labels.map((date: string, i: number) => ({
           timestamp: date,
-          rolling30d: processedData.historicalData[i] ?? null,
-          ewmaFast: processedData.forecastData[i] ?? null,
-          ensemble: processedData.ensembleForecastData?.[i] ?? null,
+          rolling30d: data.historicalData[i] ?? null,
+          ewmaFast: data.forecastData[i] ?? null,
+          ensemble: data.ensembleForecastData?.[i] ?? null,
           // Only assign implied vol to the last data point where we have it
-          impliedVol: i === processedData.labels.length - 1 ? latestImpliedVol : null
+          impliedVol: i === data.labels.length - 1 ? latestImpliedVol : null
         }));
         
         // Don't filter out data points - let Chart.js handle null values with spanGaps
@@ -142,14 +139,14 @@ export default function VolatilityThermometer({
         );
         
         // Sort by date
-        validMetrics.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+        validMetrics.sort((a: VolatilityMetrics, b: VolatilityMetrics) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         
         console.log('[VolatilityThermometer] Processed data:', {
           totalMetrics: metrics.length,
           validMetrics: validMetrics.length,
           firstMetric: validMetrics[0],
           lastMetric: validMetrics[validMetrics.length - 1],
-          sampleData: validMetrics.slice(-5).map(m => ({
+          sampleData: validMetrics.slice(-5).map((m: VolatilityMetrics) => ({
             timestamp: m.timestamp,
             historical: m.rolling30d,
             forecast: m.ewmaFast,
