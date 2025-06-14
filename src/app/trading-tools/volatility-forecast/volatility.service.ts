@@ -42,8 +42,18 @@ export interface ModelPredictions {
 
 export async function fetchVolatilityData(ticker: string): Promise<VolatilityResponse> {
   try {
+    console.log(`[VolatilityService] Fetching data for ticker: ${ticker}`);
+    
     // Use our API route instead of direct Yahoo Finance call
-    const response = await axios.get(`/api/volatility/forecast?ticker=${ticker}`);
+    const response = await axios.get(`/api/volatility/forecast?ticker=${ticker}`, {
+      timeout: 30000, // 30 second timeout
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    console.log(`[VolatilityService] API Response status: ${response.status}`);
+    console.log(`[VolatilityService] API Response data keys:`, Object.keys(response.data));
     
     // Transform the API response to match the expected interface
     const apiData = response.data;
@@ -51,21 +61,54 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
     // API returns: {labels, historicalData, forecastData, ensembleForecastData, impliedVol}
     // Service expects: {dates, historical, ewma_fast, ensemble, implied_vol}
     
-    return {
+    const transformedData = {
       dates: apiData.labels || [],
       historical: apiData.historicalData || [],
       ewma_fast: apiData.forecastData || [],
       ensemble: apiData.ensembleForecastData || [],
       implied_vol: Array.isArray(apiData.impliedVol) ? apiData.impliedVol : []
     };
+    
+    console.log(`[VolatilityService] Transformed data:`, {
+      datesLength: transformedData.dates.length,
+      historicalLength: transformedData.historical.length,
+      ewmaLength: transformedData.ewma_fast.length,
+      ensembleLength: transformedData.ensemble.length,
+      impliedVolLength: transformedData.implied_vol.length,
+      sampleDates: transformedData.dates.slice(0, 3),
+      sampleHistorical: transformedData.historical.slice(-3)
+    });
+    
+    return transformedData;
   } catch (error) {
-    console.error('Error fetching volatility data:', error);
-    throw new Error('Failed to fetch volatility data');
+    console.error('[VolatilityService] Error fetching volatility data:', error);
+    
+    if (axios.isAxiosError(error)) {
+      console.error('[VolatilityService] Axios error details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message
+      });
+    }
+    
+    throw new Error(`Failed to fetch volatility data: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 export function processVolatilityData(data: VolatilityResponse): VolatilityResult {
+  console.log('[VolatilityService] Processing volatility data:', {
+    hasData: !!data,
+    hasDates: !!data?.dates,
+    hasHistorical: !!data?.historical,
+    hasEwmaFast: !!data?.ewma_fast,
+    hasEnsemble: !!data?.ensemble,
+    datesLength: data?.dates?.length,
+    historicalLength: data?.historical?.length
+  });
+
   if (!data || !data.dates || !data.historical || !data.ewma_fast || !data.ensemble) {
+    console.error('[VolatilityService] Invalid or missing data in volatility response:', data);
     throw new Error('Invalid or missing data in volatility response');
   }
 
@@ -75,8 +118,17 @@ export function processVolatilityData(data: VolatilityResponse): VolatilityResul
     data.historical.length,
     data.ewma_fast.length,
     data.ensemble.length,
-    data.implied_vol.length
+    data.implied_vol.length || data.dates.length
   );
+
+  console.log('[VolatilityService] Array lengths:', {
+    dates: data.dates.length,
+    historical: data.historical.length,
+    ewma_fast: data.ewma_fast.length,
+    ensemble: data.ensemble.length,
+    implied_vol: data.implied_vol.length,
+    maxLength
+  });
 
   // Get valid data points and handle nulls properly
   const validData = Array.from({ length: maxLength }, (_, i) => ({
@@ -84,7 +136,7 @@ export function processVolatilityData(data: VolatilityResponse): VolatilityResul
     historical: data.historical[i],
     ewma: data.ewma_fast[i],
     ensemble: data.ensemble[i],
-    implied: data.implied_vol[i]
+    implied: data.implied_vol[i] || null
   })).filter(d => 
     d.date && 
     (typeof d.historical === 'number' || d.historical === null) &&
@@ -92,15 +144,28 @@ export function processVolatilityData(data: VolatilityResponse): VolatilityResul
     (typeof d.ensemble === 'number' || d.ensemble === null)
   );
 
-  // Find the last valid data point
+  // Find the last valid data point with actual numbers (not null)
   const lastValidIndex = validData.length - 1;
   const lastValid = lastValidIndex >= 0 ? validData[lastValidIndex] : null;
+  
+  // Find the last valid historical volatility (not null/NaN)
+  const lastValidHistorical = validData
+    .map(d => d.historical)
+    .filter(h => typeof h === 'number' && !isNaN(h))
+    .pop() || null;
 
-  // Debug log
-  console.log('Processing volatility data:', {
+  console.log('[VolatilityService] Processing results:', {
     inputLength: data.dates.length,
     validLength: validData.length,
-    lastValid: lastValid
+    lastValidIndex,
+    lastValidHistorical,
+    lastValid: lastValid ? {
+      date: lastValid.date,
+      historical: lastValid.historical,
+      ewma: lastValid.ewma,
+      ensemble: lastValid.ensemble,
+      implied: lastValid.implied
+    } : null
   });
 
   return {
@@ -108,13 +173,18 @@ export function processVolatilityData(data: VolatilityResponse): VolatilityResul
     forecastData: validData.map(d => d.ewma),
     ensembleForecastData: validData.map(d => d.ensemble),
     labels: validData.map(d => d.date),
-    historicalVol: lastValid?.historical ?? null,
+    historicalVol: lastValidHistorical,
     modelPredictions: lastValid ? {
       historical: lastValid.historical,
       ewma: lastValid.ewma,
       ensemble: lastValid.ensemble,
       implied: lastValid.implied
-    } : undefined
+    } : {
+      historical: lastValidHistorical,
+      ewma: null,
+      ensemble: null,
+      implied: null
+    }
   };
 }
 

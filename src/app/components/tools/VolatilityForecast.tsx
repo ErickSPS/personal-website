@@ -109,16 +109,31 @@ export default function VolatilityForecast({
 
   // Fetch data using the proper volatility service
   const fetchData = async (ticker: string) => {
+    console.log(`[VolatilityForecast] Starting data fetch for ${ticker}...`);
     setLoading(true);
     setError(null);
     
     try {
-      console.log(`Fetching data for ${ticker}...`);
+      console.log(`[VolatilityForecast] Calling fetchVolatilityData for ${ticker}...`);
       const volResponse = await fetchVolatilityData(ticker);
-      console.log('Raw API response:', volResponse);
+      console.log('[VolatilityForecast] Raw API response:', {
+        hasData: !!volResponse,
+        datesLength: volResponse?.dates?.length,
+        historicalLength: volResponse?.historical?.length,
+        ewmaLength: volResponse?.ewma_fast?.length,
+        ensembleLength: volResponse?.ensemble?.length
+      });
       
+      console.log('[VolatilityForecast] Processing volatility data...');
       const result = processVolatilityData(volResponse);
-      console.log('Processed data:', result);
+      console.log('[VolatilityForecast] Processed data result:', {
+        hasResult: !!result,
+        historicalDataLength: result?.historicalData?.length,
+        forecastDataLength: result?.forecastData?.length,
+        labelsLength: result?.labels?.length,
+        historicalVol: result?.historicalVol,
+        hasModelPredictions: !!result?.modelPredictions
+      });
       
       // Create properly formatted volatility metrics
       const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
@@ -129,13 +144,10 @@ export default function VolatilityForecast({
         timestamp: date
       }));
 
-      console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
-      console.log('Setting analysis results with:', {
-        historicalData: result.historicalData.length,
-        forecastData: result.forecastData.length,
-        ensembleForecastData: result.ensembleForecastData?.length,
-        labels: result.labels.length,
-        historicalVol: result.historicalVol
+      console.log('[VolatilityForecast] Created metrics:', {
+        metricsLength: metrics.length,
+        sampleMetrics: metrics.slice(0, 3),
+        lastMetric: metrics[metrics.length - 1]
       });
 
       setVolData(metrics);
@@ -152,12 +164,13 @@ export default function VolatilityForecast({
         setSpotPrice(result.modelPredictions.implied); // Using implied vol as proxy for recent data
       }
       
-      console.log('Data fetch completed successfully');
+      console.log('[VolatilityForecast] Data fetch completed successfully');
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('[VolatilityForecast] Error fetching data:', error);
       setError(error instanceof Error ? error.message : 'Failed to fetch volatility data');
       setAnalysisResults(null);
+      setVolData([]);
       setLoading(false);
     }
   };
