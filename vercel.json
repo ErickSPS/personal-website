@@ -6,7 +6,7 @@
   "regions": ["iad1"],
   "functions": {
     "src/app/api/**": {
-      "maxDuration": 10
+      "maxDuration": 15
     }
   },
   "headers": [
@@ -24,16 +24,23 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type, Authorization"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/volatility/forecast",
+      "destination": "/api/volatility/forecast"
     }
   ],
   "build": {
     "env": {
       "NODE_ENV": "production"
     }
-  },
-  "github": {
-    "enabled": false
   }
 } 
