@@ -91,11 +91,19 @@ export default function VolatilityThermometer({
         setLoading(true);
         setError(null);
         
-        console.log(`[VolatilityThermometer] Fetching data for ${ticker}...`);
+        console.log(`[VolatilityThermometer] Starting fetch for ticker: ${ticker}`);
+        console.log(`[VolatilityThermometer] Fetch URL: /api/volatility/forecast?ticker=${ticker}`);
+        console.log(`[VolatilityThermometer] Window location:`, typeof window !== 'undefined' ? window.location.href : 'SSR');
         
         const response = await fetch(`/api/volatility/forecast?ticker=${ticker}`);
+        
+        console.log(`[VolatilityThermometer] Response status: ${response.status}`);
+        console.log(`[VolatilityThermometer] Response headers:`, Object.fromEntries(response.headers.entries()));
+        
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          const errorText = await response.text();
+          console.error(`[VolatilityThermometer] Error response body:`, errorText);
+          throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
         }
         
         const data = await response.json();
@@ -158,6 +166,20 @@ export default function VolatilityThermometer({
         setVolData(validMetrics);
       } catch (error) {
         console.error('[VolatilityThermometer] Error fetching volatility data:', error);
+        
+        // Add additional debugging for Vercel deployment issues
+        if (error instanceof Error && error.message.includes('404')) {
+          console.log('[VolatilityThermometer] 404 error detected, testing API availability...');
+          
+          // Test if any API routes are working
+          try {
+            const testResponse = await fetch('/api/test');
+            console.log('[VolatilityThermometer] Test API status:', testResponse.status);
+          } catch (testError) {
+            console.error('[VolatilityThermometer] Test API also failed:', testError);
+          }
+        }
+        
         setError(error instanceof Error ? error.message : 'Failed to fetch data');
         // Set fallback data to prevent empty charts
         const fallbackData: VolatilityMetrics[] = [

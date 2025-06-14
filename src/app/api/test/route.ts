@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   return NextResponse.json({ 
-    message: 'API is working!', 
+    status: 'OK', 
+    message: 'API is working',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV 
+    environment: process.env.NODE_ENV,
+    platform: process.env.VERCEL ? 'Vercel' : 'Local'
   });
 } 
