@@ -1,5 +1,8 @@
 'use client';
 
+// DEPLOYMENT FORCE REFRESH - 2025-06-13T18:20:00Z
+// This comment forces a fresh deployment to ensure latest code is live
+
 import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
