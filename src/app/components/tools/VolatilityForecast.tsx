@@ -94,15 +94,9 @@ export default function VolatilityForecast({
   const [spotPrice, setSpotPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const { isDarkMode, toggleDarkMode } = useTheme();
-  const [tickerInput, setTickerInput] = useState('');
-  const [timeframe, setTimeframe] = useState('30');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysisResults, setAnalysisResults] = useState<VolatilityData | null>(null);
   const [selectedTicker, setSelectedTicker] = useState(ticker);
-  const [customTicker, setCustomTicker] = useState('');
-  const [isCustomTicker, setIsCustomTicker] = useState(false);
-  const [showTickerInput, setShowTickerInput] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   // Ensure this is client-side
@@ -123,7 +117,7 @@ export default function VolatilityForecast({
       const result = processVolatilityData(volResponse);
       console.log('Processed data:', result);
       
-             // Create properly formatted volatility metrics
+      // Create properly formatted volatility metrics
       const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
         rolling30d: result.historicalData[i] || 0,
         ewmaFast: result.forecastData[i] || 0,
@@ -157,56 +151,11 @@ export default function VolatilityForecast({
     }
   };
   
+  // Auto-fetch data when component mounts or ticker changes
   useEffect(() => {
+    setSelectedTicker(ticker);
     fetchData(ticker);
   }, [ticker]);
-
-  const handleAnalyze = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!tickerInput) {
-      setError('Please enter a ticker symbol');
-      return;
-    }
-    
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      console.log(`Fetching data for ${tickerInput}...`);
-      const volResponse = await fetchVolatilityData(tickerInput);
-      console.log('Raw API response:', volResponse);
-      
-      const result = processVolatilityData(volResponse);
-      console.log('Processed data:', result);
-      
-      // Create properly formatted volatility metrics
-      const metrics: VolatilityMetrics[] = result.labels.map((date: string, i: number) => ({
-        rolling30d: result.historicalData[i] || 0,
-        ewmaFast: result.forecastData[i] || 0,
-        ensemble: result.ensembleForecastData[i] || 0,
-        impliedVol: (volResponse.implied_vol && volResponse.implied_vol[i]) || 0,
-        timestamp: date
-      }));
-
-      console.log('Created metrics:', metrics.slice(0, 5)); // Log first 5 entries
-      
-      setVolData(metrics);
-      setAnalysisResults({
-        historicalData: result.historicalData,
-        forecastData: result.forecastData,
-        labels: result.labels,
-        historicalVol: result.historicalVol || 0
-      });
-      setLoading(false);
-    } catch (err) {
-      console.error('Error in handleAnalyze:', err);
-      setError(err instanceof Error ? err.message : 'Failed to analyze volatility');
-      setAnalysisResults(null);
-      setLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const chartData = analysisResults ? {
     labels: analysisResults.labels,
@@ -239,6 +188,7 @@ export default function VolatilityForecast({
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
@@ -273,31 +223,6 @@ export default function VolatilityForecast({
     },
   };
 
-  const handleTickerSelect = (ticker: string) => {
-    setSelectedTicker(ticker);
-    setIsCustomTicker(false);
-    setShowTickerInput(false);
-    // Trigger data fetch for new ticker
-    fetchData(ticker);
-  };
-
-  const handleCustomTickerSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (customTicker) {
-      setSelectedTicker(customTicker.toUpperCase());
-      setIsCustomTicker(true);
-      setShowTickerInput(false);
-      // Trigger data fetch for custom ticker
-      fetchData(customTicker.toUpperCase());
-    }
-  };
-
-  // Auto-fetch data when ticker prop changes
-  useEffect(() => {
-    setSelectedTicker(ticker);
-    fetchData(ticker);
-  }, [ticker]);
-
   if (loading) {
     return (
       <Card className={`${className} p-6 animate-pulse`}>
@@ -327,7 +252,7 @@ export default function VolatilityForecast({
       <div>
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Volatility Analysis</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Volatility Forecast - {selectedTicker}</h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
               Professional forecasting and trading recommendations
             </p>
@@ -416,7 +341,7 @@ export default function VolatilityForecast({
           </div>
         )}
 
-        {/* Volatility Chart */}
+        {/* Main Volatility Chart - Moved to top for immediate visibility */}
         <div className="mb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             Volatility Forecast Chart
@@ -540,91 +465,10 @@ export default function VolatilityForecast({
         </div>
       </div>
 
-      <div className="mt-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          Volatility Forecast
-        </h2>
-
-        <form onSubmit={handleAnalyze} className="mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Stock Ticker
-              </label>
-              <input
-                type="text"
-                value={tickerInput}
-                onChange={(e) => setTickerInput(e.target.value.toUpperCase())}
-                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                placeholder="e.g. SPY"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Timeframe (Days)
-              </label>
-              <select
-                value={timeframe}
-                onChange={(e) => setTimeframe(e.target.value)}
-                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              >
-                <option value="7">7 Days</option>
-                <option value="14">14 Days</option>
-                <option value="30">30 Days</option>
-                <option value="60">60 Days</option>
-                <option value="90">90 Days</option>
-              </select>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-          >
-            {isLoading ? 'Analyzing...' : 'Analyze Volatility'}
-          </button>
-        </form>
-
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md">
-            <p className="text-red-700 dark:text-red-300">{error}</p>
-          </div>
-        )}
-
-        {(analysisResults || chartData) && (
-          <div>
-            <div className="mb-6 h-[400px]">
-
-              <Line data={chartData!} options={chartOptions} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  Historical Volatility
-                </h3>
-                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  {analysisResults?.historicalVol?.toFixed(2) || '0.00'}%
-                </p>
-              </div>
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  Forecast Volatility
-                </h3>
-                <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
-                  {(analysisResults?.forecastData?.[analysisResults.forecastData.length - 1] || 0).toFixed(2)}%
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
-          <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
-            Powered by <span className="font-semibold text-blue-600 dark:text-blue-400">VolTools™</span> · EP Analytics
-          </span>
-        </div>
+      <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+        <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+          Powered by <span className="font-semibold text-blue-600 dark:text-blue-400">VolTools™</span> · EP Analytics
+        </span>
       </div>
     </Card>
   );
