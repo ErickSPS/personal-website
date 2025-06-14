@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import ClientLayout from '@/components/ClientLayout';
+import ClientLayout from '../../../components/ClientLayout';
 import VolatilityForecast from '../../components/tools/VolatilityForecast';
 import VolatilityThermometer from '../../components/tools/VolatilityThermometer';
 import PositionSizer from '../../components/tools/PositionSizer';

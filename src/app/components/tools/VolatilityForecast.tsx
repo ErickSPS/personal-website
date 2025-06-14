@@ -20,7 +20,7 @@ import PositionSizer from './PositionSizer';
 import EventsCalendar from './EventsCalendar';
 import StrategySuggestions from './StrategySuggestions';
 import { ChevronDownIcon, ChevronUpIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '@/components/providers/ThemeProvider';
+import { useTheme } from '../../../components/providers/ThemeProvider';
 import { Line } from 'react-chartjs-2';
 import { fetchVolatilityData, processVolatilityData, fetchMarketEvents } from '../../trading-tools/volatility-forecast/volatility.service';
 import Trademark from '../ui/Trademark';

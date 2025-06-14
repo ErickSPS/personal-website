@@ -14,7 +14,7 @@ import {
   type ChartData
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { useTheme } from '@/components/providers/ThemeProvider';
+import { useTheme } from '../../../components/providers/ThemeProvider';
 import { fetchVolatilityData, processVolatilityData } from '../../trading-tools/volatility-forecast/volatility.service';
 
 // Register ChartJS components

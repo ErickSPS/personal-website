@@ -13,7 +13,7 @@ import {
   ArrowTrendingUpIcon,
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline'
-import Header from '@/components/Header'
+import Header from '../components/Header'
 
 interface SkillCard {
   title: string
