@@ -40,23 +40,70 @@ export interface ModelPredictions {
   implied?: number | null;
 }
 
+// Test function to verify API connectivity
+export async function testApiConnection(): Promise<boolean> {
+  try {
+    const testUrl = typeof window !== 'undefined' 
+      ? `${window.location.origin}/api/test`
+      : `/api/test`;
+    
+    console.log(`[VolatilityService] Testing API connection to: ${testUrl}`);
+    
+    const response = await axios.get(testUrl, { timeout: 10000 });
+    console.log(`[VolatilityService] Test API response:`, response.data);
+    return response.status === 200;
+  } catch (error) {
+    console.error(`[VolatilityService] Test API failed:`, error);
+    return false;
+  }
+}
+
 export async function fetchVolatilityData(ticker: string): Promise<VolatilityResponse> {
   try {
     console.log(`[VolatilityService] Fetching data for ticker: ${ticker}`);
     
-    // Use our API route instead of direct Yahoo Finance call
-    const apiUrl = typeof window !== 'undefined' 
-      ? `${window.location.origin}/api/volatility/forecast?ticker=${ticker}`
-      : `/api/volatility/forecast?ticker=${ticker}`;
+    // First, test API connectivity
+    const apiWorking = await testApiConnection();
+    console.log(`[VolatilityService] API connectivity test: ${apiWorking ? 'PASS' : 'FAIL'}`);
     
+    // Use our API route instead of direct Yahoo Finance call
+    let apiUrl: string;
+    if (typeof window !== 'undefined') {
+      // Client-side: use full URL
+      apiUrl = `${window.location.origin}/api/volatility/forecast?ticker=${ticker}`;
+    } else {
+      // Server-side: use relative URL
+      apiUrl = `/api/volatility/forecast?ticker=${ticker}`;
+    }
+    
+    console.log(`[VolatilityService] Environment: ${typeof window !== 'undefined' ? 'client' : 'server'}`);
     console.log(`[VolatilityService] Making request to: ${apiUrl}`);
     
-    const response = await axios.get(apiUrl, {
-      timeout: 30000, // 30 second timeout
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    let response;
+    try {
+      response = await axios.get(apiUrl, {
+        timeout: 30000, // 30 second timeout
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+    } catch (firstError) {
+      console.log(`[VolatilityService] First attempt failed, trying fallback URL...`);
+      
+      // If the first request fails, try with a different URL format
+      const fallbackUrl = typeof window !== 'undefined' 
+        ? `/api/volatility/forecast?ticker=${ticker}` // Try relative URL on client
+        : `http://localhost:3000/api/volatility/forecast?ticker=${ticker}`; // Try absolute URL on server
+      
+      console.log(`[VolatilityService] Fallback URL: ${fallbackUrl}`);
+      
+      response = await axios.get(fallbackUrl, {
+        timeout: 30000,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+    }
     
     console.log(`[VolatilityService] API Response status: ${response.status}`);
     console.log(`[VolatilityService] API Response data keys:`, Object.keys(response.data));
