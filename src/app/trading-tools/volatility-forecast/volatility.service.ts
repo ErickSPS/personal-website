@@ -45,7 +45,13 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
     console.log(`[VolatilityService] Fetching data for ticker: ${ticker}`);
     
     // Use our API route instead of direct Yahoo Finance call
-    const response = await axios.get(`/api/volatility/forecast?ticker=${ticker}`, {
+    const apiUrl = typeof window !== 'undefined' 
+      ? `${window.location.origin}/api/volatility/forecast?ticker=${ticker}`
+      : `/api/volatility/forecast?ticker=${ticker}`;
+    
+    console.log(`[VolatilityService] Making request to: ${apiUrl}`);
+    
+    const response = await axios.get(apiUrl, {
       timeout: 30000, // 30 second timeout
       headers: {
         'Content-Type': 'application/json',
@@ -88,8 +94,24 @@ export async function fetchVolatilityData(ticker: string): Promise<VolatilityRes
         status: error.response?.status,
         statusText: error.response?.statusText,
         data: error.response?.data,
-        message: error.message
+        message: error.message,
+        code: error.code,
+        config: {
+          url: error.config?.url,
+          method: error.config?.method,
+          timeout: error.config?.timeout
+        }
       });
+      
+      if (error.code === 'ECONNREFUSED') {
+        throw new Error('Cannot connect to API server - is the development server running?');
+      } else if (error.code === 'TIMEOUT') {
+        throw new Error('API request timed out - server may be overloaded');
+      } else if (error.response?.status === 404) {
+        throw new Error('API endpoint not found - check server configuration');
+      } else if (error.response && error.response.status >= 500) {
+        throw new Error(`Server error (${error.response.status}): ${error.response.statusText}`);
+      }
     }
     
     throw new Error(`Failed to fetch volatility data: ${error instanceof Error ? error.message : 'Unknown error'}`);
