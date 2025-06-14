@@ -1,117 +1,101 @@
-# Volatility Forecasting Tool
+# Financial Dashboard
 
-A demonstration tool built to showcase volatility forecasting techniques and market data visualization. This tool uses publicly available data sources and is intended for educational purposes.
-
-## ⚠️ Data Disclaimer
-
-**This is a demonstration application.** The data provided is for educational purposes only and is sourced from publicly available APIs. The data may be subject to:
-- Rate limits
-- Delays
-- Inaccuracies
-- Service interruptions
-
-**This tool is not intended for making real trading decisions.** Always verify data from official sources before making any investment decisions.
+A comprehensive financial dashboard providing volatility forecasting, options analysis, and trading tools.
 
 ## Features
 
-- Historical volatility calculation using rolling standard deviation of log returns
-- EWMA-based volatility forecasting
-- Confidence interval estimation
-- Interactive Plotly visualizations
-- FastAPI backend with Yahoo Finance integration
-- Comprehensive test suite
+- **Volatility Forecast**: Advanced volatility prediction using multiple models (EWMA, GARCH, ensemble methods)
+- **Options Analysis**: Real-time options data and implied volatility calculations
+- **Trading Tools**: Position sizing, strategy suggestions, and risk analysis
+- **Market Events**: Economic calendar integration
+- **Real-time Data**: Yahoo Finance API integration with fallback mechanisms
 
-## Installation
+## Technical Stack
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/volatility-forecasting.git
-cd volatility-forecasting
-```
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: Next.js API routes, Python volatility models
+- **Data Sources**: Yahoo Finance, VIX data
+- **Deployment**: Vercel
 
-2. Create a virtual environment and activate it:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-### Starting the API Server
+## Local Development
 
 ```bash
-uvicorn volatility.main:app --reload
+npm install
+npm run dev
 ```
 
-The API will be available at `http://localhost:8000`
+## API Endpoints
 
-### API Endpoints
+- `/api/volatility/forecast` - Volatility predictions
+- `/api/volatility/vix` - VIX data
+- `/api/market-events` - Economic calendar
+- `/api/yahoo-finance` - Market data
 
-- `GET /`: Health check endpoint
-- `POST /forecast`: Get volatility forecast for a given ticker
-  - Parameters:
-    - `ticker`: Stock symbol (e.g., "SPY")
-    - `window`: Rolling window size in days (default: 20)
-    - `forecast_horizon`: Number of days to forecast (default: 5)
-    - `confidence`: Confidence level for intervals (default: 0.95)
+## Architecture
 
-### Example Request
+The application uses a hybrid approach:
+- Next.js for the web interface and API routes
+- Python models for advanced volatility calculations
+- Real-time data fetching with robust error handling
+- Fallback data systems for high availability
 
-```python
-import requests
+## Volatility Models
 
-response = requests.post("http://localhost:8000/forecast", json={
-    "ticker": "SPY",
-    "window": 20,
-    "forecast_horizon": 5,
-    "confidence": 0.95
-})
+1. **Historical Volatility**: Rolling window calculations
+2. **EWMA**: Exponentially weighted moving averages
+3. **Ensemble Methods**: Combined forecasting approaches
+4. **Implied Volatility**: Options-based calculations with VIX fallback
 
-data = response.json()
-```
+## Data Sources
 
-## Technical Details
+- Yahoo Finance API for historical prices
+- VIX index for implied volatility backup
+- Economic calendar APIs for market events
 
-### Volatility Calculation
+## Error Handling
 
-The tool uses a simple and robust approach:
+- Comprehensive fallback mechanisms
+- Rate limiting protection
+- Data validation and sanitization
+- Graceful degradation strategies
 
-1. Historical Volatility:
-   - Calculate daily log returns
-   - Compute rolling standard deviation
-   - Annualize by multiplying with sqrt(252)
+## Performance
 
-2. Volatility Forecast:
-   - Uses Exponentially Weighted Moving Average (EWMA)
-   - Industry-standard decay factor of 0.94
-   - Projects volatility forward using decay
+- Optimized API responses
+- Efficient data caching
+- Responsive design
+- Fast chart rendering
 
-3. Confidence Intervals:
-   - Based on historical volatility standard deviation
-   - Uses normal distribution assumptions
-   - Provides upper and lower bounds for forecasts
+## Security
 
-## Testing
+- Input validation
+- CORS configuration
+- Rate limiting
+- Secure API practices
 
-Run the test suite:
+## Monitoring
 
-```bash
-pytest tests/
-```
+- Error logging
+- Performance metrics
+- Data quality checks
+- Health monitoring endpoints
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## License
 
-MIT License 
+MIT License - see LICENSE file for details.
+
+## Support
+
+For issues and questions, please use the GitHub issue tracker.
+
+---
+
+*Last updated: June 2025 - Build fix deployed* 
