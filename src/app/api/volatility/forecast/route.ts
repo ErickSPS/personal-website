@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getImpliedVolatility } from '../yahoo-finance';
+import { getHistoricalPrices as getAlphaVantageHistoricalPrices } from '../alpha-vantage';
 import axios from 'axios';
 
 interface ForecastRequest {
@@ -105,6 +106,18 @@ async function fetchHistoricalPrices(ticker: string): Promise<{ prices: number[]
         await new Promise(resolve => setTimeout(resolve, delay));
       }
 
+      // Try Alpha Vantage first (more reliable)
+      try {
+        console.log(`Trying Alpha Vantage for ${ticker} (attempt ${attempt + 1})`);
+        const alphaVantageData = await getAlphaVantageHistoricalPrices(ticker, 'compact');
+        console.log(`Successfully fetched ${alphaVantageData.prices.length} days from Alpha Vantage for ${ticker}`);
+        return alphaVantageData;
+      } catch (alphaVantageError) {
+        console.log(`Alpha Vantage failed for ${ticker}, falling back to Yahoo Finance:`, alphaVantageError);
+      }
+
+      // Fallback to Yahoo Finance
+      console.log(`Trying Yahoo Finance for ${ticker} (attempt ${attempt + 1})`);
       const response = await axios.get(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}`, {
         params: {
           range: '90d',

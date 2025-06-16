@@ -1,18 +1,34 @@
-# Python dependencies (not needed for Next.js deployment)
-requirements.txt
-setup.py
-pyproject.toml
+# Python dependencies and files (not needed for Next.js deployment)
+requirements.txt*
+setup.py*
+pyproject.toml*
 volatility_forecast.egg-info/
 __pycache__/
 .pytest_cache/
 tests/
 volatility/
+*.pyc
+*.pyo
+*.pyd
 
 # Python root-level API directory (not the Next.js src/app/api)
 /api/
 
-# Development files
+# Development and build files
 .coverage
 coverage/
 .vercel/
-.git/ 
+.git/
+node_modules/
+.next/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~ 
