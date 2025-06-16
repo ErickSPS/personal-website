@@ -1,0 +1,19 @@
+# Python dependencies (not needed for Next.js deployment)
+requirements.txt
+setup.py
+pyproject.toml
+volatility_forecast.egg-info/
+*.py
+__pycache__/
+.pytest_cache/
+tests/
+api/
+
+# Only deploy Next.js app
+volatility/
+
+# Development files
+.coverage
+coverage/
+.vercel/
+.git/ 
