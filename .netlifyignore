@@ -3,14 +3,13 @@ requirements.txt
 setup.py
 pyproject.toml
 volatility_forecast.egg-info/
-*.py
 __pycache__/
 .pytest_cache/
 tests/
-api/
-
-# Only deploy Next.js app
 volatility/
+
+# Python root-level API directory (not the Next.js src/app/api)
+/api/
 
 # Development files
 .coverage

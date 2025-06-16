@@ -4,14 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_FLAGS = "--production"
 
-# Ignore Python files during build
-[build.ignore]
-  requirements = "requirements.txt"
-  python_setup = "setup.py"
-  pyproject = "pyproject.toml"
-
-# Ensure only Next.js build runs
+# Use Next.js plugin for proper API route handling
 [[plugins]]
   package = "@netlify/plugin-nextjs" 
