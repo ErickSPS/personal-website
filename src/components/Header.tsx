@@ -30,6 +30,12 @@ export default function Header() {
             >
               Trading Tools
             </Link>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light transition-colors"
+            >
+              Blog
+            </Link>
           </nav>
           <div className="flex items-center space-x-2">
             <button

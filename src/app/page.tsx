@@ -11,7 +11,8 @@ import {
   CodeBracketIcon,
   PresentationChartLineIcon,
   ArrowTrendingUpIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  PencilSquareIcon
 } from '@heroicons/react/24/outline'
 import Header from '../components/Header'
 
@@ -77,15 +78,15 @@ const featuredWork = [
     link: '/trading-tools/volatility-forecast',
   },
   {
+    title: 'Trading & Finance Blog',
+    description: 'In-depth articles on trading strategies, market analysis, and quantitative finance techniques.',
+    icon: PencilSquareIcon,
+    link: '/blog',
+  },
+  {
     title: 'Portfolio Optimization',
     description: 'Risk-adjusted portfolio optimization using modern portfolio theory and advanced risk metrics.',
     icon: PresentationChartLineIcon,
-    link: '#',
-  },
-  {
-    title: 'Market Scanner',
-    description: 'Real-time market scanner for identifying trading opportunities across multiple asset classes.',
-    icon: MagnifyingGlassIcon,
     link: '#',
   },
 ]
@@ -116,6 +117,18 @@ export default function Home() {
                 <span className="flex items-center gap-2">
                   <ChartBarIcon className="h-5 w-5 transition-transform group-hover:scale-110" />
                   View Trading Tools
+                  <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+              <Link
+                href="/blog"
+                className="hero-button-outline group w-full sm:w-auto"
+              >
+                <span className="flex items-center gap-2">
+                  <PencilSquareIcon className="h-5 w-5 transition-transform group-hover:scale-110" />
+                  Read Blog
                   <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
