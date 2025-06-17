@@ -29,7 +29,7 @@ const skills: SkillCard[] = [
   },
   {
     title: 'Options Trading',
-    description: 'Advanced options strategies, Greeks analysis, and volatility trading',
+    description: 'Implementing sophisticated options strategies with a focus on risk management and volatility dynamics',
     icon: ArrowTrendingUpIcon,
   },
   {
@@ -72,7 +72,7 @@ const skills: SkillCard[] = [
 const featuredWork = [
   {
     title: 'Volatility Analysis Tool',
-    description: 'Advanced options trading strategy recommendations based on volatility analysis and market conditions.',
+    description: 'Data-driven options strategy recommendations powered by volatility analysis and market insights',
     icon: ChartBarIcon,
     link: '/trading-tools/volatility-forecast',
   },
@@ -102,11 +102,11 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Financial Professional
               <br />
-              <span className="text-gradient">Who Builds Better Trading Decisions</span>
+              <span className="text-gradient">Who Builds Data-Driven Trading Solutions</span>
             </h1>
             <p className="text-xl text-text dark:text-text-dark max-w-2xl mx-auto mb-8">
               Bridging the gap between financial markets and technology with
-              professional-grade trading tools and analysis
+              practical tools and analysis
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
               <Link
@@ -184,7 +184,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Skills & Expertise
+              Skills & Experience
             </h2>
             <p className="text-lg text-text dark:text-text-dark max-w-2xl mx-auto">
               A comprehensive set of financial and technical capabilities

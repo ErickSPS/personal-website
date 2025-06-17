@@ -17,7 +17,7 @@ export default function TradingTools() {
             Trading Tools
           </h1>
           <p className="text-lg text-secondary max-w-2xl mx-auto">
-            Professional-grade tools for market analysis and trading decisions
+            Advanced tools for market analysis and trading decisions
           </p>
         </div>
 
