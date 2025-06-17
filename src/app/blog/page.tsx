@@ -8,48 +8,15 @@ import Header from '../../components/Header';
 // This would typically come from a CMS, database, or markdown files
 const blogPosts = [
   {
-    id: 'understanding-options-volatility',
-    title: 'Understanding Options Volatility: A Comprehensive Guide',
-    excerpt: 'Dive deep into the world of options volatility, exploring implied vs historical volatility, and how traders can leverage these concepts for better decision making.',
+    id: 'mirage-of-obvious-games',
+    title: 'The Mirage of Obvious Games: How Hidden Edges Define Success',
+    excerpt: 'Explore how small hidden negative edges can be more dangerous than obvious bad deals. Interactive simulator demonstrates how noise can mask true expectancy in trading strategies.',
     content: '',
-    author: 'Erick Perez',
-    publishedAt: '2024-01-15',
-    readTime: '8 min read',
-    tags: ['Options', 'Volatility', 'Trading Strategy'],
-    featured: true
-  },
-  {
-    id: 'vix-trading-strategies',
-    title: 'VIX Trading Strategies: Profiting from Market Fear',
-    excerpt: 'Learn how to trade the VIX effectively, including timing entries and exits, risk management, and understanding the unique characteristics of volatility products.',
-    content: '',
-    author: 'Erick Perez',
-    publishedAt: '2024-01-10',
-    readTime: '6 min read',
-    tags: ['VIX', 'Volatility', 'Risk Management'],
-    featured: false
-  },
-  {
-    id: 'algorithmic-trading-python',
-    title: 'Building Algorithmic Trading Systems with Python',
-    excerpt: 'A practical guide to developing and backtesting trading algorithms using Python, covering data collection, strategy development, and risk management.',
-    content: '',
-    author: 'Erick Perez',
-    publishedAt: '2024-01-05',
+    author: 'Erick Perez', 
+    publishedAt: '2024-01-20',
     readTime: '12 min read',
-    tags: ['Python', 'Algorithmic Trading', 'Development'],
+    tags: ['Edge', 'Risk Management', 'Psychology', 'Simulation'],
     featured: true
-  },
-  {
-    id: 'market-regime-analysis',
-    title: 'Market Regime Analysis: Adapting Strategies to Market Conditions',
-    excerpt: 'Understanding different market regimes and how to adapt your trading strategies accordingly. Learn to identify trend, range-bound, and high volatility environments.',
-    content: '',
-    author: 'Erick Perez',
-    publishedAt: '2024-01-01',
-    readTime: '10 min read',
-    tags: ['Market Analysis', 'Strategy', 'Risk Management'],
-    featured: false
   }
 ];
 
