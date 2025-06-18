@@ -82,7 +82,7 @@
   }
 
   .dark .text-gradient {
-    @apply bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white via-yellow-300 to-amber-400 bg-clip-text text-transparent;
   }
 
   .card {
