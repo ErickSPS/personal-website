@@ -513,7 +513,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
       <Header />
 
       {/* Hero Section with site colors */}
-      <div className="bg-gradient-to-br from-primary via-primary-light to-secondary text-white relative overflow-hidden">
+      <div className="bg-gradient-to-br from-primary via-primary-light to-secondary dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 text-white relative overflow-hidden transition-colors duration-300">
         {/* Background pattern */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
         <div className="absolute inset-0" style={{
@@ -553,8 +553,8 @@ export default function BlogPost({ params }: BlogPostPageProps) {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-lg bg-black/20 backdrop-blur-sm p-4 rounded-lg">
-            {post.title}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-lg bg-black/20 backdrop-blur-sm p-4 rounded-lg">
+            <span className="text-gradient">{post.title}</span>
           </h1>
 
           {/* Excerpt */}
