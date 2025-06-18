@@ -97,7 +97,7 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background dark:from-primary-light/5 dark:to-background-dark">
+      <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background dark:from-slate-800/50 dark:to-background-dark transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
