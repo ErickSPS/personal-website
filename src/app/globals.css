@@ -78,7 +78,7 @@
 
 @layer components {
   .text-gradient {
-    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white via-yellow-400 to-orange-500 bg-clip-text text-transparent;
   }
 
   .dark .text-gradient {
