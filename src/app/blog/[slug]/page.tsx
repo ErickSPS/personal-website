@@ -13,23 +13,83 @@ const blogPosts = [
     id: 'mirage-of-obvious-games',
     title: 'The Mirage of Obvious Games: How Hidden Edges Define Success',
     excerpt: 'In trading, the most dangerous traps aren\'t the obvious ones—they\'re the subtle, hidden edges that slowly erode capital while appearing profitable. Learn how to identify and avoid these insidious wealth destroyers through interactive simulation.',
-    content: `> **Key Insight:** The most dangerous trading strategies aren't the obviously bad ones that lose money quickly—they're the subtly negative ones that can appear profitable for months or years before revealing their true nature.
+    content: `## The Invitation
+
+You receive a black envelope—unmarked, except for a crisp seal stamped with the word: **"Mirror."**
+
+Inside, a handwritten card.
+
+*"You're invited. A new casino in town. One game. We think you'll appreciate it."*
+
+No address. Just coordinates.
+
+You think to yourself: *"It's just a soft escape—a night wrapped in bright lights and free drinks."*
 
 ---
 
-## The Dangerous Allure of the "Almost Fair" Game
+## The Game
 
-Picture this scenario: You're offered two games at a casino.
+Curiosity leads you to an old building, half art gallery, half private club. No music, no machines, no scent of desperation. Just silence—and a single table under a soft white light.
 
-**Game A** gives you a 10% chance of winning—obviously terrible, you'd never play.
+A dealer waits. Polished. Patient.
 
-**Game B** gives you a 49% chance of winning—almost fair, almost reasonable.
+**"Welcome to Mirror Black: The Fairest Game on Earth,"** she says.
 
-Most people would avoid Game A entirely but might be tempted by Game B.
+*"One card drawn per round. You guess red or black. Get it right, win what you bet. Get it wrong, lose. Standard deck. No jokers. No tricks."*
 
-### **Here's the trap:** Game B is far more dangerous to your wealth than Game A.
+*"No rake,"* she adds. *"We don't need this game to make money."*
 
-This isn't a casino story—it's the fundamental challenge every trader faces in financial markets. The most dangerous strategies aren't the obviously bad ones that lose money quickly. They're the subtly negative ones that can appear profitable for months or even years before revealing their true nature.
+You pause. That last line intrigues you.
+
+**"Then why run it?"** you ask.
+
+She smiles. *"Some games are good for business... in other ways."*
+
+---
+
+## The Setup
+
+And you buy it.
+
+You're no fool—you've read the right books. Kelly Criterion, fractional betting, risk of ruin. You decide to play responsibly: **1% of your bankroll per flip.** A slow, sustainable game. One designed for longevity. Maybe even mastery.
+
+You settle in. The drinks arrive. Time slows. You lose a few flips, win a few. Nothing alarming. But hours pass. The pattern settles in. Something's... *off*.
+
+You start running the math in your head. *"Am I just unlucky?"* You tighten your jaw. Bet again.
+
+---
+
+## The Revelation
+
+**Here's what you don't see:**
+
+There are **two versions** of Mirror Black.
+
+At one table, the deck is rigged—black wins only **10%** of the time. It burns bankrolls fast. Players notice. They leave. Or they rage. Either way, they don't last long.
+
+At the other table—**the one you're at**—red wins just slightly more often. A rig so delicate, so precise, that you could play hundreds of hands and never suspect a thing. The difference is **50.5% to 49.5%.** Practically invisible. Statistically lethal.
+
+But the house isn't playing for today. The house plays for volume. And this second table—subtle, quiet, believable—is the real masterpiece.
+
+---
+
+## The Truth
+
+**And here's the real twist:**
+
+Mirror Black isn't a card game. **It's the market.**
+
+- It's a zero-commission brokerage
+- It's the stock that looks "ready to break out"  
+- It's the asset with a narrative just strong enough to seem fair
+- It's the comfort of liquidity, the illusion of control
+- It's the frictionless interface that hides just how much edge you're giving away
+
+**It's not rigged enough to offend your intelligence—just enough to bleed you over time.**
+
+And while you're trying to win back your last loss... someone else—someone who built the table—is calculating your next move before you even make it.
+
+> **The most dangerous trading strategies aren't the obviously bad ones that lose money quickly—they're the subtly negative ones that can appear profitable for months or years before revealing their true nature.**
 
 ---
 
