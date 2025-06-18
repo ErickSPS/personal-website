@@ -337,64 +337,70 @@ export default function BlogPost({ params }: BlogPostPageProps) {
     // Check if this is the Mirror Black post that needs the image
     const hasImage = content.includes('She smiles. *"Some games are good for business... in other ways."*');
     
-    // Handle image insertion first, then simulator
-    let processedContent = content;
-    let imageComponent = null;
+    // Define the image component
+    const imageComponent = (
+      <div className="my-12 relative">
+        <img 
+          src="/images/mirror-black-dealer.jpeg" 
+          alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
+          className="w-full rounded-xl shadow-2xl"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+        <div className="absolute bottom-4 left-4 text-white text-sm italic">
+          Welcome to Mirror Black: The Fairest Game on Earth
+        </div>
+      </div>
+    );
     
-    if (hasImage) {
-      // Find the exact position to insert the image (after the dealer's dialogue)
-      const imageInsertPoint = 'She smiles. *"Some games are good for business... in other ways."*';
-      const imagePosition = content.indexOf(imageInsertPoint);
-      
-      if (imagePosition !== -1) {
-        // Split content at the image insertion point
-        const beforeImage = content.substring(0, imagePosition + imageInsertPoint.length);
-        const afterImage = content.substring(imagePosition + imageInsertPoint.length);
-        
-        // Create the image component
-        imageComponent = (
-          <div className="my-12 relative">
-            <img 
-              src="/images/mirror-black-dealer.jpeg" 
-              alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
-              className="w-full rounded-xl shadow-2xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
-            <div className="absolute bottom-4 left-4 text-white text-sm italic">
-              Welcome to Mirror Black: The Fairest Game on Earth
-            </div>
-          </div>
-        );
-        
-        // Update processed content to exclude the image insertion point
-        processedContent = beforeImage + afterImage;
-      }
-    }
-    
-    // Split content by sections and handle the simulator insertion
-    const sections = processedContent.split('## Interactive Learning Lab');
+    // Split content by sections and handle both image and simulator insertion
+    const sections = content.split('## Interactive Learning Lab');
     
     if (sections.length > 1) {
-      // Insert the simulator between the "Interactive Learning Lab" section
+      // Handle the part before the simulator
       const beforeSimulator = sections[0] + '## Interactive Learning Lab' + 
         sections[1].split('## Key Insights for Professional Traders')[0];
       const afterSimulator = '## Key Insights for Professional Traders' + 
         (sections[1].split('## Key Insights for Professional Traders')[1] || '');
       
-      // Check if image should be in the before simulator section
-      const imageInBeforeSection = hasImage && beforeSimulator.includes('She smiles. *"Some games are good for business... in other ways."*');
+      // Split the before simulator section at the image insertion point
+      if (hasImage && beforeSimulator.includes('She smiles. *"Some games are good for business... in other ways."*')) {
+        const imageInsertPoint = 'She smiles. *"Some games are good for business... in other ways."*';
+        const parts = beforeSimulator.split(imageInsertPoint);
+        const beforeImageContent = parts[0] + imageInsertPoint;
+        const afterImageContent = parts[1] || '';
+        
+        return (
+          <div className="max-w-none">
+            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeImageContent) }} />
+            {imageComponent}
+            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterImageContent) }} />
+            
+            {/* Interactive Simulator Section */}
+            <div className="my-16 p-8 bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10 rounded-2xl border border-primary/20 dark:border-primary/30 shadow-lg">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 dark:bg-primary/20 rounded-full mb-4">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium text-primary dark:text-primary-light">Live Simulation</span>
+                </div>
+                <h3 className="text-3xl font-bold text-primary dark:text-primary-light mb-3">
+                  Interactive Monte Carlo Lab
+                </h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                  Experience the hidden edge phenomenon firsthand. Watch how seemingly "reasonable" strategies can slowly destroy capital while appearing profitable.
+                </p>
+              </div>
+              <CorruptCasinoSimulator />
+            </div>
+            
+            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterSimulator) }} />
+          </div>
+        );
+      }
       
+      // Fallback if image insertion point not found in before simulator section
       return (
         <div className="max-w-none">
-          {imageInBeforeSection ? (
-            <>
-              <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator.split('She smiles. *"Some games are good for business... in other ways."*')[0] + 'She smiles. *"Some games are good for business... in other ways."*') }} />
-              {imageComponent}
-              <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator.split('She smiles. *"Some games are good for business... in other ways."*')[1] || '') }} />
-            </>
-          ) : (
-            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator) }} />
-          )}
+          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator) }} />
           
           {/* Interactive Simulator Section */}
           <div className="my-16 p-8 bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10 rounded-2xl border border-primary/20 dark:border-primary/30 shadow-lg">
@@ -419,23 +425,27 @@ export default function BlogPost({ params }: BlogPostPageProps) {
     }
     
     // Handle content without simulator but with image
-    if (hasImage && imageComponent) {
-      const beforeImageText = processedContent.split('She smiles. *"Some games are good for business... in other ways."*')[0] + 'She smiles. *"Some games are good for business... in other ways."*';
-      const afterImageText = processedContent.split('She smiles. *"Some games are good for business... in other ways."*')[1] || '';
-      
-      return (
-        <div className="max-w-none">
-          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeImageText) }} />
-          {imageComponent}
-          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterImageText) }} />
-        </div>
-      );
+    if (hasImage) {
+      const imageInsertPoint = 'She smiles. *"Some games are good for business... in other ways."*';
+      if (content.includes(imageInsertPoint)) {
+        const parts = content.split(imageInsertPoint);
+        const beforeImageContent = parts[0] + imageInsertPoint;
+        const afterImageContent = parts[1] || '';
+        
+        return (
+          <div className="max-w-none">
+            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeImageContent) }} />
+            {imageComponent}
+            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterImageContent) }} />
+          </div>
+        );
+      }
     }
     
     return (
       <div 
         className="max-w-none"
-        dangerouslySetInnerHTML={{ __html: formatMarkdown(processedContent) }}
+        dangerouslySetInnerHTML={{ __html: formatMarkdown(content) }}
       />
     );
   };
