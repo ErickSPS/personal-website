@@ -45,18 +45,6 @@ You pause. That last line intrigues you.
 
 She smiles. *"Some games are good for business... in other ways."*
 
-<div className="my-12 relative">
-  <img 
-    src="/images/mirror-black-dealer.jpg" 
-    alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
-    className="w-full rounded-xl shadow-2xl"
-  />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
-  <div className="absolute bottom-4 left-4 text-white text-sm italic">
-    Welcome to Mirror Black: The Fairest Game on Earth
-  </div>
-</div>
-
 ---
 
 ## The Setup
@@ -346,6 +334,9 @@ export default function BlogPost({ params }: BlogPostPageProps) {
   }
 
   const renderContent = (content: string) => {
+    // Check if this is the Mirror Black post that needs the image
+    const hasImage = content.includes('She smiles. *"Some games are good for business... in other ways."*');
+    
     // Split content by sections and handle the simulator insertion
     const sections = content.split('## Interactive Learning Lab');
     
@@ -356,9 +347,24 @@ export default function BlogPost({ params }: BlogPostPageProps) {
       const afterSimulator = '## Key Insights for Professional Traders' + 
         (sections[1].split('## Key Insights for Professional Traders')[1] || '');
       
-      return (
+        return (
         <div className="max-w-none">
           <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator) }} />
+          
+          {/* Mirror Black Casino Image */}
+          {hasImage && beforeSimulator.includes('She smiles. *"Some games are good for business... in other ways."*') && (
+            <div className="my-12 relative">
+                        <img 
+            src="/images/mirror-black-dealer.jpeg" 
+            alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
+            className="w-full rounded-xl shadow-2xl"
+          />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+              <div className="absolute bottom-4 left-4 text-white text-sm italic">
+                Welcome to Mirror Black: The Fairest Game on Earth
+              </div>
+            </div>
+          )}
           
           {/* Interactive Simulator Section */}
           <div className="my-16 p-8 bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10 rounded-2xl border border-primary/20 dark:border-primary/30 shadow-lg">
@@ -369,7 +375,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
               </div>
               <h3 className="text-3xl font-bold text-primary dark:text-primary-light mb-3">
                 Interactive Monte Carlo Lab
-              </h3>
+          </h3>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Experience the hidden edge phenomenon firsthand. Watch how seemingly "reasonable" strategies can slowly destroy capital while appearing profitable.
               </p>
@@ -382,7 +388,36 @@ export default function BlogPost({ params }: BlogPostPageProps) {
       );
     }
     
-    return (
+    // Handle content without simulator but with image
+    if (hasImage) {
+      // Find the position to insert the image (after "She smiles..." line)
+      const imageInsertPoint = 'She smiles. *"Some games are good for business... in other ways."*\n\n---';
+      const beforeImageContent = content.substring(0, content.indexOf(imageInsertPoint) + imageInsertPoint.length - 4); // Remove the "---"
+      const afterImageContent = content.substring(content.indexOf(imageInsertPoint) + imageInsertPoint.length - 4); // Keep the "---"
+      
+        return (
+        <div className="max-w-none">
+          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeImageContent) }} />
+          
+          {/* Mirror Black Casino Image */}
+          <div className="my-12 relative">
+            <img 
+              src="/images/mirror-black-dealer.jpeg" 
+              alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
+              className="w-full rounded-xl shadow-2xl"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+            <div className="absolute bottom-4 left-4 text-white text-sm italic">
+              Welcome to Mirror Black: The Fairest Game on Earth
+            </div>
+          </div>
+          
+          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterImageContent) }} />
+        </div>
+        );
+      }
+      
+      return (
       <div 
         className="max-w-none"
         dangerouslySetInnerHTML={{ __html: formatMarkdown(content) }}
@@ -462,15 +497,15 @@ export default function BlogPost({ params }: BlogPostPageProps) {
         
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
           {/* Back Button */}
-          <div className="mb-8">
-            <Link
-              href="/blog"
+        <div className="mb-8">
+          <Link
+            href="/blog"
               className="inline-flex items-center space-x-2 text-white/80 hover:text-white transition-colors group"
-            >
+          >
               <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
               <span>Back to Blog</span>
-            </Link>
-          </div>
+          </Link>
+        </div>
 
           {/* Article Meta */}
           <div className="flex items-center space-x-6 text-sm text-white/80 mb-6">
@@ -491,35 +526,35 @@ export default function BlogPost({ params }: BlogPostPageProps) {
               <span>{post.views} views</span>
             </div>
           </div>
-          
+
           {/* Title */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-lg bg-black/20 backdrop-blur-sm p-4 rounded-lg">
             {post.title}
           </h1>
-          
+
           {/* Excerpt */}
           <p className="text-xl text-white/90 leading-relaxed mb-8 max-w-3xl">
             {post.excerpt}
           </p>
-          
+
           {/* Tags */}
           <div className="flex items-center space-x-2 mb-8">
             <TagIcon className="h-4 w-4 text-white/70" />
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
                   className="px-3 py-1 text-sm bg-white/20 backdrop-blur-sm text-white rounded-full border border-white/30 hover:bg-white/30 transition-colors"
-                >
-                  {tag}
-                </span>
-              ))}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
         </div>
-      </div>
+          </div>
 
-      {/* Article Content */}
+        {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white dark:bg-gray-900 rounded-xl">
           <div className="prose prose-lg prose-gray dark:prose-invert max-w-none">
@@ -553,8 +588,8 @@ export default function BlogPost({ params }: BlogPostPageProps) {
                     {skill}
                   </span>
                 ))}
-              </div>
-              
+            </div>
+
               {/* Social/Action Buttons */}
               <div className="flex items-center space-x-6">
                 <Link
