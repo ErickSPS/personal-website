@@ -333,12 +333,46 @@ export default function BlogPost({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const renderContent = (content: string) => {
+    const renderContent = (content: string) => {
     // Check if this is the Mirror Black post that needs the image
     const hasImage = content.includes('She smiles. *"Some games are good for business... in other ways."*');
     
+    // Handle image insertion first, then simulator
+    let processedContent = content;
+    let imageComponent = null;
+    
+    if (hasImage) {
+      // Find the exact position to insert the image (after the dealer's dialogue)
+      const imageInsertPoint = 'She smiles. *"Some games are good for business... in other ways."*';
+      const imagePosition = content.indexOf(imageInsertPoint);
+      
+      if (imagePosition !== -1) {
+        // Split content at the image insertion point
+        const beforeImage = content.substring(0, imagePosition + imageInsertPoint.length);
+        const afterImage = content.substring(imagePosition + imageInsertPoint.length);
+        
+        // Create the image component
+        imageComponent = (
+          <div className="my-12 relative">
+            <img 
+              src="/images/mirror-black-dealer.jpeg" 
+              alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
+              className="w-full rounded-xl shadow-2xl"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+            <div className="absolute bottom-4 left-4 text-white text-sm italic">
+              Welcome to Mirror Black: The Fairest Game on Earth
+            </div>
+          </div>
+        );
+        
+        // Update processed content to exclude the image insertion point
+        processedContent = beforeImage + afterImage;
+      }
+    }
+    
     // Split content by sections and handle the simulator insertion
-    const sections = content.split('## Interactive Learning Lab');
+    const sections = processedContent.split('## Interactive Learning Lab');
     
     if (sections.length > 1) {
       // Insert the simulator between the "Interactive Learning Lab" section
@@ -347,23 +381,19 @@ export default function BlogPost({ params }: BlogPostPageProps) {
       const afterSimulator = '## Key Insights for Professional Traders' + 
         (sections[1].split('## Key Insights for Professional Traders')[1] || '');
       
-        return (
+      // Check if image should be in the before simulator section
+      const imageInBeforeSection = hasImage && beforeSimulator.includes('She smiles. *"Some games are good for business... in other ways."*');
+      
+      return (
         <div className="max-w-none">
-          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator) }} />
-          
-          {/* Mirror Black Casino Image */}
-          {hasImage && beforeSimulator.includes('She smiles. *"Some games are good for business... in other ways."*') && (
-            <div className="my-12 relative">
-                        <img 
-            src="/images/mirror-black-dealer.jpeg" 
-            alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
-            className="w-full rounded-xl shadow-2xl"
-          />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
-              <div className="absolute bottom-4 left-4 text-white text-sm italic">
-                Welcome to Mirror Black: The Fairest Game on Earth
-              </div>
-            </div>
+          {imageInBeforeSection ? (
+            <>
+              <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator.split('She smiles. *"Some games are good for business... in other ways."*')[0] + 'She smiles. *"Some games are good for business... in other ways."*') }} />
+              {imageComponent}
+              <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator.split('She smiles. *"Some games are good for business... in other ways."*')[1] || '') }} />
+            </>
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeSimulator) }} />
           )}
           
           {/* Interactive Simulator Section */}
@@ -375,7 +405,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
               </div>
               <h3 className="text-3xl font-bold text-primary dark:text-primary-light mb-3">
                 Interactive Monte Carlo Lab
-          </h3>
+              </h3>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Experience the hidden edge phenomenon firsthand. Watch how seemingly "reasonable" strategies can slowly destroy capital while appearing profitable.
               </p>
@@ -389,38 +419,23 @@ export default function BlogPost({ params }: BlogPostPageProps) {
     }
     
     // Handle content without simulator but with image
-    if (hasImage) {
-      // Find the position to insert the image (after "She smiles..." line)
-      const imageInsertPoint = 'She smiles. *"Some games are good for business... in other ways."*\n\n---';
-      const beforeImageContent = content.substring(0, content.indexOf(imageInsertPoint) + imageInsertPoint.length - 4); // Remove the "---"
-      const afterImageContent = content.substring(content.indexOf(imageInsertPoint) + imageInsertPoint.length - 4); // Keep the "---"
-      
-        return (
-        <div className="max-w-none">
-          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeImageContent) }} />
-          
-          {/* Mirror Black Casino Image */}
-          <div className="my-12 relative">
-            <img 
-              src="/images/mirror-black-dealer.jpeg" 
-              alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
-              className="w-full rounded-xl shadow-2xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
-            <div className="absolute bottom-4 left-4 text-white text-sm italic">
-              Welcome to Mirror Black: The Fairest Game on Earth
-            </div>
-          </div>
-          
-          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterImageContent) }} />
-        </div>
-        );
-      }
+    if (hasImage && imageComponent) {
+      const beforeImageText = processedContent.split('She smiles. *"Some games are good for business... in other ways."*')[0] + 'She smiles. *"Some games are good for business... in other ways."*';
+      const afterImageText = processedContent.split('She smiles. *"Some games are good for business... in other ways."*')[1] || '';
       
       return (
+        <div className="max-w-none">
+          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(beforeImageText) }} />
+          {imageComponent}
+          <div dangerouslySetInnerHTML={{ __html: formatMarkdown(afterImageText) }} />
+        </div>
+      );
+    }
+    
+    return (
       <div 
         className="max-w-none"
-        dangerouslySetInnerHTML={{ __html: formatMarkdown(content) }}
+        dangerouslySetInnerHTML={{ __html: formatMarkdown(processedContent) }}
       />
     );
   };
