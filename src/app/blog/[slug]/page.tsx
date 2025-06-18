@@ -45,6 +45,18 @@ You pause. That last line intrigues you.
 
 She smiles. *"Some games are good for business... in other ways."*
 
+<div className="my-12 relative">
+  <img 
+    src="/images/mirror-black-dealer.jpg" 
+    alt="Mirror Black casino dealer at an elegant table in atmospheric lighting" 
+    className="w-full rounded-xl shadow-2xl"
+  />
+  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+  <div className="absolute bottom-4 left-4 text-white text-sm italic">
+    Welcome to Mirror Black: The Fairest Game on Earth
+  </div>
+</div>
+
 ---
 
 ## The Setup
