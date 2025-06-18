@@ -553,7 +553,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-lg bg-black/20 backdrop-blur-sm p-4 rounded-lg">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
             <span className="text-gradient">{post.title}</span>
           </h1>
 
