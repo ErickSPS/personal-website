@@ -310,7 +310,7 @@ And never forget that the most dangerous game is often the one that feels almost
 
 *Want to dive deeper into systematic trading approaches and risk management? Follow my blog for weekly insights on navigating the complex world of financial markets with data-driven strategies.*`,
     author: 'Erick Perez',
-    publishedAt: '2024-12-18',
+    publishedAt: '2025-06-18',
     readTime: '12 min read',
     tags: ['Edge Detection', 'Risk Management', 'Trading Psychology', 'Monte Carlo'],
     featured: true,

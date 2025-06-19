@@ -83,6 +83,12 @@ const featuredWork = [
     icon: PencilSquareIcon,
     link: '/blog',
   },
+  {
+    title: 'Risk Management Tools',
+    description: 'Professional position sizing calculators and risk assessment tools for systematic trading approaches.',
+    icon: PresentationChartLineIcon,
+    link: '/trading-tools',
+  },
 ]
 
 export default function Home() {

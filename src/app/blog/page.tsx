@@ -13,7 +13,7 @@ const blogPosts = [
     excerpt: 'Explore how small hidden negative edges can be more dangerous than obvious bad deals. Interactive simulator demonstrates how noise can mask true expectancy in trading strategies.',
     content: '',
     author: 'Erick Perez', 
-    publishedAt: '2024-12-15',
+    publishedAt: '2025-06-18',
     readTime: '12 min read',
     tags: ['Edge', 'Risk Management', 'Psychology', 'Simulation'],
     featured: true

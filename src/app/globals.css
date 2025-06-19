@@ -78,11 +78,11 @@
 
 @layer components {
   .text-gradient {
-    @apply bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white via-yellow-400 to-orange-500 bg-clip-text text-transparent;
   }
 
   .dark .text-gradient {
-    @apply bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white via-yellow-300 to-amber-400 bg-clip-text text-transparent;
   }
 
   .card {
