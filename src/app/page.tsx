@@ -83,12 +83,6 @@ const featuredWork = [
     icon: PencilSquareIcon,
     link: '/blog',
   },
-  {
-    title: 'Portfolio Optimization',
-    description: 'Risk-adjusted portfolio optimization using modern portfolio theory and advanced risk metrics.',
-    icon: PresentationChartLineIcon,
-    link: '#',
-  },
 ]
 
 export default function Home() {
@@ -106,7 +100,7 @@ export default function Home() {
               <span className="text-gradient">Who Builds Data-Driven Trading Solutions</span>
             </h1>
             <p className="text-xl text-text dark:text-text-dark max-w-2xl mx-auto mb-8">
-              Bridging the gap between financial markets and technology with
+              Bridging the gap between financial markets and investment opportunities with
               practical tools and analysis
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
