@@ -97,15 +97,21 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background dark:from-slate-800/50 dark:to-background-dark transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-secondary dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 text-white transition-colors duration-300">
+        {/* Background pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
               Financial Professional
               <br />
               <span className="text-gradient">Who Builds Data-Driven Trading Solutions</span>
             </h1>
-            <p className="text-xl text-text dark:text-text-dark max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
               Bridging the gap between financial markets and investment opportunities with
               practical tools and analysis
             </p>
