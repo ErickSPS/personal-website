@@ -632,7 +632,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
               Master Volatility Analysis
             </h3>
             <p className="text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Explore our comprehensive volatility tools suite. From forecasting and thermometers to position sizing and strategy suggestions—everything you need to understand market volatility and make informed trading decisions.
+              Explore my volatility estimate demo tool! With features like forecasting, thermometers, precise position sizing, and tailored strategy suggestions, you have all the essential resources at your fingertips to analyze and leverage volatility to your advantage.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">

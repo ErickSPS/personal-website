@@ -215,11 +215,7 @@ const CorruptCasinoSimulator: React.FC = () => {
         <h2 className="text-3xl font-bold text-primary mb-4">
           Interactive "Corrupt Casino" Simulator
         </h2>
-        <p className="text-secondary max-w-3xl mx-auto">
-          Demonstrate how a small hidden negative expectancy can erode a trader's bankroll more 
-          insidiously than an obvious bad deal. Choose between rigged coins and see how noise 
-          can hide the true edge.
-        </p>
+
       </div>
 
       {/* Input Controls */}
