@@ -451,9 +451,7 @@ const CorruptCasinoSimulator: React.FC = () => {
 
             <h5 className="font-semibold">"Get to Work" Prompt</h5>
             <p className="text-secondary leading-relaxed">
-              Review one of your own trading setups: simulate its outcomes under varying assumptions 
-              (volatility shifts, slippage, tail events). Does any hidden negative expectancy appear? 
-              If so, adjust or discard before real capital deployment.
+              Put your own strategy through the validation checklist: <strong>Break it down</strong>—test one assumption at a time rather than the whole strategy. <strong>Count the small pennies</strong>—include every cost you've been ignoring. <strong>Test it properly</strong>—across bull markets, bear markets, and the boring stuff in between. Most importantly, <strong>stay flexible</strong>—if the data shows it doesn't work, accept it and move on. Remember: it's easier to disprove a bad idea quickly than to prove a good one slowly.
             </p>
           </div>
         </div>
