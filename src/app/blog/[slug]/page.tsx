@@ -201,7 +201,7 @@ To truly understand how hidden edges work, theoretical knowledge isn't enough. Y
 
 The interactive simulator below demonstrates exactly this phenomenon. You can choose between two "corrupt casino" games and see how they play out over time. Pay particular attention to how the 49% win rate game can appear deceptively profitable for extended periods before the hidden edge reveals itself.
 
-**⚠️ Warning:** This simulation will challenge your intuitions about what constitutes a "good" strategy.
+**💡 Heads up:** This simulation might surprise you—what looks like a "decent" strategy could be slowly bleeding money.
 
 ---
 
@@ -307,9 +307,9 @@ export default function BlogPost({ params }: BlogPostPageProps) {
     if (sections.length > 1) {
       // Handle the part before the simulator - split right after the warning text
       const beforeSimulator = sections[0] + '## Interactive Learning Lab' + 
-        sections[1].split('**⚠️ Warning:** This simulation will challenge your intuitions about what constitutes a "good" strategy.')[0] +
-        '**⚠️ Warning:** This simulation will challenge your intuitions about what constitutes a "good" strategy.';
-      const afterSimulator = sections[1].split('**⚠️ Warning:** This simulation will challenge your intuitions about what constitutes a "good" strategy.')[1] || '';
+        sections[1].split('**💡 Heads up:** This simulation might surprise you—what looks like a "decent" strategy could be slowly bleeding money.')[0] +
+        '**💡 Heads up:** This simulation might surprise you—what looks like a "decent" strategy could be slowly bleeding money.';
+      const afterSimulator = sections[1].split('**💡 Heads up:** This simulation might surprise you—what looks like a "decent" strategy could be slowly bleeding money.')[1] || '';
       
       // Split the before simulator section at the image insertion point
       if (hasImage && beforeSimulator.includes('She smiles. *"Some games are good for business... in other ways."*')) {
@@ -331,8 +331,8 @@ export default function BlogPost({ params }: BlogPostPageProps) {
                   <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
                   <span className="text-sm font-medium text-primary dark:text-primary-light">Live Simulation</span>
                 </div>
-                <h3 className="text-3xl font-bold text-primary dark:text-primary-light mb-3">
-                  Interactive Monte Carlo Lab
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-3">
+                  Interactive "Mirror Black" Simulator
                 </h3>
                 <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                   Experience the hidden edge phenomenon firsthand. Watch how seemingly "reasonable" strategies can slowly destroy capital while appearing profitable.
@@ -358,8 +358,8 @@ export default function BlogPost({ params }: BlogPostPageProps) {
                 <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
                 <span className="text-sm font-medium text-primary dark:text-primary-light">Live Simulation</span>
               </div>
-              <h3 className="text-3xl font-bold text-primary dark:text-primary-light mb-3">
-                Interactive Monte Carlo Lab
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-3">
+                Interactive "Mirror Black" Simulator
               </h3>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Experience the hidden edge phenomenon firsthand. Watch how seemingly "reasonable" strategies can slowly destroy capital while appearing profitable.
@@ -626,13 +626,13 @@ export default function BlogPost({ params }: BlogPostPageProps) {
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Interactive Demo Available</span>
+              <span className="text-sm font-medium">Volatility Tools Suite</span>
             </div>
-            <h3 className="text-4xl font-bold mb-6 leading-tight">
-              Experience Hidden Edge Detection
+            <h3 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-6 leading-tight">
+              Master Volatility Analysis
             </h3>
             <p className="text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Put theory into practice with our Monte Carlo simulator. See how subtle negative edges can destroy capital while appearing profitable—and learn to spot them before they cost you money.
+              Explore our comprehensive volatility tools suite. From forecasting and thermometers to position sizing and strategy suggestions—everything you need to understand market volatility and make informed trading decisions.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
