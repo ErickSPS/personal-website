@@ -199,7 +199,7 @@ Because that's the heartbeat of this whole endeavor.
 
 To truly understand how hidden edges work, theoretical knowledge isn't enough. You need to experience the slow, insidious erosion of capital that can occur when noise masks a negative edge.
 
-The interactive simulator below demonstrates exactly this phenomenon. You can choose between two "corrupt casino" games and see how they play out over time. Pay particular attention to how the 49% win rate game can appear deceptively profitable for extended periods before the hidden edge reveals itself.
+The interactive simulator below demonstrates exactly this phenomenon. You can choose among multiple "corrupt" tables and see how they play out over time. Pay particular attention to how the 49% win rate game can appear deceptively profitable for extended periods before the hidden edge reveals itself.
 
 **💡 Heads up:** This simulation might surprise you—what looks like a "decent" strategy could be slowly bleeding money.
 

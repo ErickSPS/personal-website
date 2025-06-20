@@ -197,24 +197,22 @@ const CorruptCasinoSimulator: React.FC = () => {
     const { avgTrialsToHalving, probHalving } = results;
 
     if (pWin === 0.49) {
-      return `With the 49%-win rig, average time to 50% drawdown is ~${Math.round(avgTrialsToHalving)} trials, 
-        and ${Math.round(probHalving * 100)}% of paths experienced halving. This hidden negative expectancy 
-        can linger deceptively above 50% for long periods before collapsing, masking the negative edge in noise.`;
+      return `At the 49%-win Mirror Black table, players experience bankroll halving after ~${Math.round(avgTrialsToHalving)} hands on average, 
+        with ${Math.round(probHalving * 100)}% of sessions ending in significant losses. This table's subtle edge 
+        keeps players seated longer, creating the illusion of fairness while systematically draining capital.`;
     } else if (pWin === 0.1) {
-      return `With the 10%-win rig, ruin often happens quickly (average ${Math.round(avgTrialsToHalving)} trials), 
-        with ${Math.round(probHalving * 100)}% of paths experiencing halving. The negative edge is obvious sooner—but 
-        most traders would avoid this strategy early due to its obvious poor performance.`;
+      return `At the 10%-win table, bankruptcy strikes swiftly (average ${Math.round(avgTrialsToHalving)} hands), 
+        with ${Math.round(probHalving * 100)}% of sessions ending badly. Players quickly recognize this table's obvious corruption—but 
+        most walk away before losing significant money, making it less profitable for the house.`;
     }
 
-    return `With ${Math.round(pWin * 100)}% win rate, average time to 50% drawdown is ~${Math.round(avgTrialsToHalving)} trials.`;
+    return `At the ${Math.round(pWin * 100)}%-win table, players reach 50% drawdown after ~${Math.round(avgTrialsToHalving)} hands on average.`;
   };
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-primary mb-4">
-          Interactive "Corrupt Casino" Simulator
-        </h2>
+
 
       </div>
 
@@ -258,7 +256,7 @@ const CorruptCasinoSimulator: React.FC = () => {
 
           <div>
             <label htmlFor="coinBias" className="block text-sm font-medium text-secondary mb-2">
-              Coin Bias
+              Card Bias
             </label>
             <select
               id="coinBias"
@@ -347,7 +345,7 @@ const CorruptCasinoSimulator: React.FC = () => {
                       x: {
                         title: {
                           display: true,
-                          text: 'Trial Number',
+                          text: 'Hand Number',
                         },
                       },
                       y: {
@@ -364,7 +362,7 @@ const CorruptCasinoSimulator: React.FC = () => {
 
             {/* Histogram */}
             <div className="card p-6">
-              <h4 className="text-lg font-semibold mb-4">Distribution of Trials to 50% Drawdown</h4>
+              <h4 className="text-lg font-semibold mb-4">Distribution of Hands to 50% Drawdown</h4>
               {histogramData ? (
                 <Bar
                   data={histogramData}
@@ -383,7 +381,7 @@ const CorruptCasinoSimulator: React.FC = () => {
                       x: {
                         title: {
                           display: true,
-                          text: 'Trials to 50% Drawdown',
+                          text: 'Hands to 50% Drawdown',
                         },
                       },
                       y: {
@@ -411,7 +409,7 @@ const CorruptCasinoSimulator: React.FC = () => {
                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {Math.round(results.avgTrialsToHalving)}
                 </div>
-                <div className="text-sm text-secondary">Avg Trials to 50% Drawdown</div>
+                <div className="text-sm text-secondary">Avg Hands to 50% Drawdown</div>
               </div>
               <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
                 <div className="text-2xl font-bold text-red-600 dark:text-red-400">
