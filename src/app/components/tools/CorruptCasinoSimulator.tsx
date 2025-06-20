@@ -449,7 +449,7 @@ const CorruptCasinoSimulator: React.FC = () => {
               not just average P&L.
             </p>
 
-            <h5 className="font-semibold">"Get to Work" Prompt</h5>
+            <h5 className="font-semibold">"Get to Work"</h5>
             <p className="text-secondary leading-relaxed">
               Put your own strategy through the validation checklist: <strong>Break it down</strong>—test one assumption at a time rather than the whole strategy. <strong>Count the small pennies</strong>—include every cost you've been ignoring. <strong>Test it properly</strong>—across bull markets, bear markets, and the boring stuff in between. Most importantly, <strong>stay flexible</strong>—if the data shows it doesn't work, accept it and move on. Remember: it's easier to disprove a bad idea quickly than to prove a good one slowly.
             </p>

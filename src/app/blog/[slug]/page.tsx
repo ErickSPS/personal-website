@@ -131,9 +131,9 @@ I created this simple example to highlight two important concepts.
 
 **First**, to reinforce the animating theme of this blog post: edge is the lifeblood of trading. It's the only thing that matters over a large enough sample. Just as a positive edge, repeated with discipline and without going all-in, compounds into wealth—so does a negative edge drain you, slowly but inevitably.
 
-**The second reason is more subtle.** It's to show how easily our instincts can betray us, and how crucial multi-order thinking becomes. The reflex is to point at the 90% table and cry foul. But consider the path: most rational players wouldn't stick around long enough in the 90% rigged-table to see half their bankroll disappear. The trap is too obvious. The pain too immediate.
+**The second reason is more subtle.** It's to show how easily our instincts can betray us, and how crucial multi-order thinking becomes. The reflex is to point at the 90% table and cry foul. The trap is too obvious. The pain too immediate.
 
-But the 49% table? That one wears a smile. It offers false hope. And it's precisely that illusion of "almost winning" that seduces you into staying just a little longer. That's where the real danger lives—not in the worst odds, but in the ones that look fair.
+But the 49% table? That one wears a smile. It offers false hope. And it's precisely that illusion of "almost winning" that seduces you into staying just a little longer.
 
 **This distinction—between how things appear and how they play out—is the essence of multi-order thinking. And in trading, it's everything.**
 
@@ -169,7 +169,7 @@ But what is worth coming to terms with is the truth behind a quote I find partic
 
 That's not a warning—it's an orientation.
 
-Because professionals don't win by tricking you or hunting your stops. They win by showing up every day with a clear process and a deep understanding of the risks they're willing to warehouse. They quote both sides, manage risk at scale, and operate in environments that are built to exploit structure, not a specific individual. If you lose money, it's not personal. It's just the inevitable tax of getting into or existing in a trade at a bad price you didn't fully understand.
+Because professionals don't win by tricking you or hunting your stops. They win by showing up every day with a clear process and a deep understanding of the risks they're willing to warehouse; especially in their execution and infrastructure. They quote both sides, manage risk at scale, and operate in environments that are built to exploit structure, not a specific individual. If you lose money, it's not personal. It's just the inevitable tax of getting into or existing in a trade at a bad price you didn't fully understand.
 
 **And therein lies the cold, empowering truth: no one is thinking about you as much as you think they are.**
 
@@ -180,6 +180,8 @@ The edge they harvest isn't born from malice—it's born from repetition, discip
 So the question isn't just, "What's my strategy?" It's, "What kind of risk am I willing to carry—and am I being paid enough to carry it?"
 
 Because that's the heartbeat of this whole endeavor.
+
+I might discuss sources of advantages for institutional investors versus retail investors in another post.
 
 ---
 
