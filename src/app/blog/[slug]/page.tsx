@@ -12,7 +12,7 @@ const blogPosts = [
   {
     id: 'mirage-of-obvious-games',
     title: 'The Mirage of Obvious Games: How Hidden Edges Define Success',
-    excerpt: 'In trading, the most dangerous traps aren\'t the obvious ones—they\'re the subtle, hidden edges that slowly erode capital while appearing profitable. Learn how to identify and avoid these insidious wealth destroyers through interactive simulation.',
+    excerpt: 'What if the most dangerous trading strategy isn\'t the one that loses money fast, but the one that feels almost fair? Some games are designed not to rob you, but to keep you playing. Explore the psychology and mathematics behind strategies that look reasonable but hide something more subtle.',
     content: `## The Invitation
 
 You receive a black envelope—unmarked, except for a crisp seal stamped with the word: **"Mirror."**
