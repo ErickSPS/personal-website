@@ -123,18 +123,6 @@ Why? Because the edge is subtle enough to pass as fair. It's small. Small enough
 
 In contrast, the version where red comes up 90% of the time? That's too obvious. Most players would smell the con in less than a dozen trials. You don't need a PhD in statistics to know something's off when you see one or two blacks in 13 draws. You've lived enough to recognize when the deck feels stacked.
 
-### The Path of Deception
-
-Now consider the path.
-
-Let's say you bet just 1% of your bankroll each round. In the 90/10 game, you'd probably tap out quickly—but not because of sustained losses. Rather, because your pattern recognition would sound the alarm early. It's not sustainable and it's not subtle.
-
-But in the 49% game, the danger is camouflaged. You won't notice it in the first few rounds—or even the first hundred. The variance smooths the losses just enough to convince you that it's just a bad run. That's what makes it deadly. It's a trap designed for longevity. And the longer you play, the more certain the outcome: slow bleed. Death by a thousand paper cuts.
-
-That's the real genius of the rigged-but-not-obvious game. You don't walk away because you never feel truly beat. The edge is small—but persistent. And that's precisely why it's the one that drains you.
-
-**In the long run, the 49% table will quietly siphon more money from you—not because it's rigged more aggressively, but because it's rigged just enough to keep your guard down.** The noise flatters you. It lets you win often enough to justify staying seated. That's the trap.
-
 ---
 
 ## Two Important Concepts
