@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CalendarIcon, ClockIcon, TagIcon, ArrowLeftIcon, ShareIcon, EyeIcon, UserIcon } from '@heroicons/react/24/outline';
 import Header from '../../../components/Header';
@@ -249,12 +249,11 @@ My takeaway: Learning to separate real edges from convincing illusions has been 
 
 *Want to dive deeper into systematic trading approaches and risk management? Follow my blog for weekly insights on navigating the complex world of financial markets with data-driven strategies.*`,
     author: 'Erick Perez',
-    publishedAt: '2025-06-18',
+    publishedAt: '2025-06-20',
     readTime: '12 min read',
     tags: ['Edge Detection', 'Risk Management', 'Trading Psychology', 'Monte Carlo'],
     featured: true,
     authorBio: 'Financial professional with deep interest in systematic trading, options strategies, and quantitative analysis. Passionate about bridging the gap between theory and practice in financial markets.',
-    views: '0',
     expertise: ['Systematic Trading', 'Risk Management', 'Options Strategies', 'Quantitative Analysis']
   }
 ];
@@ -267,10 +266,20 @@ interface BlogPostPageProps {
 
 export default function BlogPost({ params }: BlogPostPageProps) {
   const post = blogPosts.find(p => p.id === params.slug);
+  const [viewCount, setViewCount] = useState(0);
 
   if (!post) {
     notFound();
   }
+
+  // Track visitor count
+  useEffect(() => {
+    const viewKey = `blog-views-${params.slug}`;
+    const currentViews = parseInt(localStorage.getItem(viewKey) || '0', 10);
+    const newViewCount = currentViews + 1;
+    localStorage.setItem(viewKey, newViewCount.toString());
+    setViewCount(newViewCount);
+  }, [params.slug]);
 
     const renderContent = (content: string) => {
     // Check if this is the Mirror Black post that needs the image
@@ -487,7 +496,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
             </div>
             <div className="flex items-center space-x-2">
               <EyeIcon className="h-4 w-4" />
-              <span>{post.views} views</span>
+              <span>{viewCount} views</span>
             </div>
           </div>
 

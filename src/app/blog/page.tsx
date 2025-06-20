@@ -10,10 +10,10 @@ const blogPosts = [
   {
     id: 'mirage-of-obvious-games',
     title: 'The Mirage of Obvious Games: How Hidden Edges Define Success',
-    excerpt: 'Explore how small hidden negative edges can be more dangerous than obvious bad deals. Interactive simulator demonstrates how noise can mask true expectancy in trading strategies.',
+    excerpt: 'What happens when the most dangerous strategy isn\'t the one that bleeds money fast, but the one that feels almost fair? Step into Mirror Black casino and discover why the subtlest traps are often the deadliest.',
     content: '',
     author: 'Erick Perez', 
-    publishedAt: '2025-06-18',
+    publishedAt: '2025-06-20',
     readTime: '12 min read',
     tags: ['Edge', 'Risk Management', 'Psychology', 'Simulation'],
     featured: true
